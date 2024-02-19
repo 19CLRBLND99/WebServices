@@ -1,0 +1,11 @@
+## Frontend 
+- [ ] 
+
+## Backend 
+- [ ] 
+
+## Thermometer 
+- [ ] 
+
+## Datenbank
+- [ ] 
