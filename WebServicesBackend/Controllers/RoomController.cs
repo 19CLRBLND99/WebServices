@@ -43,5 +43,25 @@ namespace WebServicesBackend.Controllers
             return (result) ? Ok(newTemperature) : BadRequest();
         }
 
+        [Route("/GetRoomById")]
+        [HttpPost]
+        public IActionResult GetRoomByRoomId(int roomId)
+        {
+            var roomService = new RoomService();
+            var result = roomService.GetRoomById(roomId);
+            return (result  != null)? Ok(result) : BadRequest();
+            
+        }
+
+        [Route("/GetAllRooms")]
+        [HttpPost]
+        public IActionResult GetAllRooms()
+        {
+            var roomService = new RoomService();
+            var result = roomService.GetAllRooms();
+            return (result != null) ? Ok(result) : BadRequest();
+
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using WebServicesBackend.Database;
+using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Services
 {
@@ -63,6 +64,21 @@ namespace WebServicesBackend.Services
             //thermostatService.SetThermostatTemperature(result.ThermostatId, newTemperature);
 
             return (result) ? true : false;
+        }
+
+        public RoomModel GetRoomById(int roomId) { 
+            var roomDbService = new DatabaseRoomService();
+            var result = roomDbService.GetRoomById(roomId);
+
+            return result;
+        }
+
+        public List<RoomModel> GetAllRooms()
+        {
+            var roomDbService = new DatabaseRoomService();
+            var result = roomDbService.GetAllRooms();
+
+            return result;
         }
     }
 }
