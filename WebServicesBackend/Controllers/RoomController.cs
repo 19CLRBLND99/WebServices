@@ -40,7 +40,7 @@ namespace WebServicesBackend.Controllers
         {
             var roomService = new RoomService();
             var result = roomService.UpdateRoomTemperature(roomId,newTemperature);
-            return (result.Item1) ? Ok(result.Item2) : BadRequest();
+            return (result) ? Ok(newTemperature) : BadRequest();
         }
 
     }

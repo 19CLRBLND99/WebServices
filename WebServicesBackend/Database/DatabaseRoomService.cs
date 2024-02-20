@@ -18,9 +18,9 @@
             return new Tuple<bool, string?>(true, "Barbies neues Schminkzimmer");
         }
 
-        public Tuple<bool, double?> UpdateRoomTemperature(int roomId, double newTemperature)
+        public bool UpdateRoomTemperature(int roomId, double newTemperature)
         {
-            return new Tuple<bool, double?>(true, 25.4);
+            return true;
         }
     }
 }

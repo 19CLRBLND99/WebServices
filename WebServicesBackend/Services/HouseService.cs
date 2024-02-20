@@ -31,11 +31,11 @@ namespace WebServicesBackend.Services
         }
 
         /// <summary>
-        /// 
+        /// Method which is used for updating the name of a house 
         /// </summary>
-        /// <param name="newHouseName"></param>
-        /// <param name="houseId"></param>
-        /// <returns></returns>
+        /// <param name="newHouseName">the new name for the house </param>
+        /// <param name="houseId">the id of an existing house </param>
+        /// <returns>a tuple of a boolean and a string. The boolean indicates whether the update was successfull or not and the string is the updated name </returns>
         public Tuple<bool, string?> UpdateHouse(string newHouseName, int houseId)
         {
             var houseDbService = new DatabaseHouseService();
