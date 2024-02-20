@@ -1,4 +1,5 @@
 ﻿using WebServicesBackend.Database;
+using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Services
 {
@@ -42,6 +43,26 @@ namespace WebServicesBackend.Services
             var result = houseDbService.UpdateHouse(newHouseName, houseId);
 
             return (result.Item1) ? result : new Tuple<bool, string?>(false, null);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<HouseModel> GetAllHouses() 
+        { 
+        
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="houseId"></param>
+        /// <returns></returns>
+        public HouseModel GetHouseById(int houseId)
+        {
+
         }
     }
 }
