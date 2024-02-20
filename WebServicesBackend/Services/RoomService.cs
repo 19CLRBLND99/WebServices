@@ -1,4 +1,5 @@
-﻿using WebServicesBackend.Database;
+﻿using System.Linq.Expressions;
+using WebServicesBackend.Database;
 
 namespace WebServicesBackend.Services
 {
@@ -8,12 +9,11 @@ namespace WebServicesBackend.Services
         /// Method wich is used for adding a room 
         /// </summary>
         /// <param name="roomName">the name of the to be created room </param>
-        /// <param name="houseId">the house id the room should be assigned to</param>
         /// <returns>A tuple of a boolean and an integer. the boolean indicates whether the creation was successfull or not and the integer is the id of the newly created room </returns>
-        public Tuple<bool, int?> AddRoom(string roomName, int houseId)
+        public Tuple<bool, int?> AddRoom(string roomName)
         {
             var roomDbService = new DatabaseRoomService();
-            var result = roomDbService.AddRoom(roomName, houseId);
+            var result = roomDbService.AddRoom(roomName);
 
             return (result.Item1) ? result : new Tuple<bool, int?>(false, null);
         }
@@ -54,7 +54,13 @@ namespace WebServicesBackend.Services
         public bool UpdateRoomTemperature(int roomId, double newTemperature)
         {
             var roomDbService = new DatabaseRoomService();
+            var thermostatService = new ThermostatService();
             var result = roomDbService.UpdateRoomTemperature(roomId, newTemperature);
+
+            //result contains thermostatID 
+            //updatethermostattemperature(thermostatID,newTemp)
+
+            //thermostatService.SetThermostatTemperature(result.ThermostatId, newTemperature);
 
             return (result) ? true : false;
         }

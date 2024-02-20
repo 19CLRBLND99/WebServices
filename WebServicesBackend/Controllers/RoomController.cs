@@ -9,10 +9,10 @@ namespace WebServicesBackend.Controllers
     {
         [Route("/AddRoom")]
         [HttpPost]
-        public IActionResult AddRoom(string roomName, int houseId)
+        public IActionResult AddRoom(string roomName)
         {
             var roomService = new RoomService();
-            var result = roomService.AddRoom(roomName,houseId);
+            var result = roomService.AddRoom(roomName);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
 

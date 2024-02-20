@@ -1,11 +1,37 @@
-﻿namespace WebServicesBackend.Database
+﻿using MySql.Data.MySqlClient;
+
+namespace WebServicesBackend.Database
 {
     public class DatabaseThermostatService
     {
+        string connectionString = "Server=172.18.96.1;Database=SmartHomeDB;User ID=root;Password=password;";
         public Tuple<bool,int?> AddThermostat()
         {
-            //TODO implement creation stuff and after thermostat was created succesfully return true and the ID of the created item 
-            return new Tuple<bool, int?>(true, 1);
+            MySqlConnection connection = new MySqlConnection(connectionString);
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Verbindung erfolgreich geöffnet!");
+
+                string sqlStatement = "SELECT * FROM rooms"; 
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine();
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+            }
         }
 
         public bool DeleteThermostat(int thermostatId)

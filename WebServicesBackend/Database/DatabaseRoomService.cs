@@ -2,9 +2,8 @@
 {
     public class DatabaseRoomService
     {
-        public Tuple<bool, int?> AddRoom(string roomName, int roomId)
+        public Tuple<bool, int?> AddRoom(string roomName)
         {
-
             return new Tuple<bool, int?>(true, 1);
         }
 
@@ -15,7 +14,7 @@
 
         public Tuple<bool, string?> UpdateRoom(string newRoomName, int roomId)
         {
-            return new Tuple<bool, string?>(true, "Barbies neues Schminkzimmer");
+            return new Tuple<bool, string?>(true, "");
         }
 
         public bool UpdateRoomTemperature(int roomId, double newTemperature)
