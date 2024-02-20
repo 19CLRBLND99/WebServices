@@ -25,12 +25,12 @@ namespace WebServicesBackend.Controllers
             return (result) ? Ok() : BadRequest();
         }
 
-        [Route("/UpdateRoom")]
+        [Route("/UpdateRoomName")]
         [HttpPost]
-        public IActionResult UpdateRoom(string newRoomName,int roomId)
+        public IActionResult UpdateRoomName(int roomId, string newRoomName)
         {
             var roomService = new RoomService();
-            var result = roomService.UpdateRoom(newRoomName, roomId);
+            var result = roomService.UpdateRoomName(roomId, newRoomName);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
 
@@ -41,6 +41,15 @@ namespace WebServicesBackend.Controllers
             var roomService = new RoomService();
             var result = roomService.UpdateRoomTemperature(roomId,newTemperature);
             return (result) ? Ok(newTemperature) : BadRequest();
+        }
+
+        [Route("/AssignThermostatToRoom")]
+        [HttpPost]
+        public IActionResult AssignThermostatToRoom(int roomId, int thermostatId)
+        {
+            var roomService = new RoomService();
+            var result = roomService.AssignThermostatToRoom(roomId, thermostatId);
+            return (result) ? Ok() : BadRequest();
         }
 
         [Route("/GetRoomById")]

@@ -69,19 +69,99 @@ namespace WebServicesBackend.Database
             return result;
         }
 
-        public Tuple<bool, string?> UpdateRoom(string newRoomName, int roomId)
+        public Tuple<bool, string?> UpdateRoomName(int roomId, string newRoomName)
         {
-            return new Tuple<bool, string?>(true, "");
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+
+            try
+            {
+                connection.Open();
+
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"UPDATE rooms SET name = \"{newRoomName}\" WHERE id = {roomId};";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
+                }
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new Tuple<bool, string?>(false, null);
+            }
+            return new Tuple<bool, string?>(true, newRoomName);
         }
 
-        public Tuple<bool, string?> AssignThermostatToRoom(string newRoomName, int roomId)
+        public bool AssignThermostatToRoom(int roomId, int thermostatId)
         {
-            return new Tuple<bool, string?>(true, "");
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+
+            try
+            {
+                connection.Open();
+
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"UPDATE rooms SET thermostatID = '{thermostatId}' WHERE id = {roomId};";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
+                }
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return false;
+            }
+            return result;
         }
 
-        public bool UpdateRoomTemperature(int roomId, double newTemperature)
+        public Tuple<bool,int?> UpdateRoomTemperature(int roomId, double newTemperature)
         {
-            return true;
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+            int thermostatId = -1;
+
+            try
+            {
+                connection.Open();
+
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"UPDATE rooms SET temperature = '{newTemperature}' WHERE id = {roomId}; SELECT thermostatID FROM rooms WHERE id = {roomId}; ";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
+                
+                    MySqlDataReader reader = command.ExecuteReader())
+                
+                    while (reader.Read())
+                    {
+                        thermostatId = reader.GetInt32(0);
+                    }
+                }
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new Tuple<bool,int?>(false,null);
+            }
+            return new Tuple<bool,int?>(result,thermostatId);
         }
 
         public RoomModel GetRoomById(int roomId)

@@ -30,8 +30,13 @@ namespace WebServicesBackend.Services
             return (result) ? true : false; 
         }
 
-        public void SetThermostatTemperature(int thermostatId, double newTemperature)
+        //TODO IMPLEMENT STUFF 
+        public void SetThermostatTemperature(int? thermostatId, double newTemperature)
         {
+            if (thermostatId == null)
+            {
+                return;
+            }
             Console.WriteLine(newTemperature); // api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt 
         }
     }

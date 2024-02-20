@@ -38,12 +38,26 @@ namespace WebServicesBackend.Services
         /// <param name="newRoomName">the new name for the room </param>
         /// <param name="roomId">the id of an existing room </param>
         /// <returns>a tuple of a boolean and a string. The boolean indicates whether the update was successfull or not and the string is the updated name </returns>
-        public Tuple<bool, string?> UpdateRoom(string newRoomName, int roomId)
+        public Tuple<bool, string?> UpdateRoomName(int roomId, string newRoomName )
         {
             var roomDbService = new DatabaseRoomService();
-            var result = roomDbService.UpdateRoom(newRoomName, roomId);
+            var result = roomDbService.UpdateRoomName(roomId, newRoomName);
 
             return (result.Item1) ? result : new Tuple<bool, string?>(false, null);
+        }
+
+        /// <summary>
+        /// Method which is used for assigning a thermometer to a specific room 
+        /// </summary>
+        /// <param name="roomId">the room id </param>
+        /// <param name="thermostatId">the thermometer id</param>
+        /// <returns>a boolean which inidactes whether the assigning process was successfull or not </returns>
+        public bool AssignThermostatToRoom(int roomId, int thermostatId)
+        {
+            var roomDbService = new DatabaseRoomService();
+            var result = roomDbService.AssignThermostatToRoom(roomId, thermostatId);
+
+            return (result) ? true : false;
         }
 
         /// <summary>
@@ -58,12 +72,11 @@ namespace WebServicesBackend.Services
             var thermostatService = new ThermostatService();
             var result = roomDbService.UpdateRoomTemperature(roomId, newTemperature);
 
-            //result contains thermostatID 
-            //updatethermostattemperature(thermostatID,newTemp)
+            var thermostatId = result.Item2;
 
-            //thermostatService.SetThermostatTemperature(result.ThermostatId, newTemperature);
+            thermostatService.SetThermostatTemperature(result.Item2, newTemperature); 
 
-            return (result) ? true : false;
+            return (result.Item1) ? true : false;
         }
 
         public RoomModel GetRoomById(int roomId) { 
