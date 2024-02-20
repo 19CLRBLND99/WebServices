@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebServicesBackend.Services;
 
 namespace WebServicesBackend.Controllers
 {
@@ -10,21 +11,27 @@ namespace WebServicesBackend.Controllers
         [HttpPost]
         public IActionResult AddHouse(string houseName)
         {
-            return Ok(houseName);
+            var houseService = new HouseService();
+            var result = houseService.AddHouse(houseName);
+            return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
 
         [Route("/DeleteHouse")]
         [HttpDelete]
         public IActionResult DeleteHouse(int houseId)
         {
-            return Ok();
+            var houseService = new HouseService();
+            var result = houseService.DeleteHouse(houseId);
+            return (result) ? Ok(result) : BadRequest();
         }
 
         [Route("/UpdateHouse")]
         [HttpPut]
-        public IActionResult UpdateHouse(string newHouseName)
+        public IActionResult UpdateHouse(string newHouseName, int houseId)
         {
-            return Ok(newHouseName);
+            var houseService = new HouseService();
+            var result = houseService.UpdateHouse(newHouseName,houseId);
+            return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
     }
 }
