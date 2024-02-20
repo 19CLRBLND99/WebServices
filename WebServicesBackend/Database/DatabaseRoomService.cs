@@ -5,19 +5,76 @@ namespace WebServicesBackend.Database
 {
     public class DatabaseRoomService
     {
-        string connectionString = "Server=172.30.224.1;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
 
         public Tuple<bool, int?> AddRoom(string roomName)
         {
-            return new Tuple<bool, int?>(true, 1);
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            int result = -1;
+
+            try
+            {
+                connection.Open();
+
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", '21.3',NULL); SELECT last_insert_id();";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = reader.GetInt32(0);
+                        Console.WriteLine(result);
+                    }
+                }
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new Tuple<bool, int?>(false, 0);
+            }
+            return new Tuple<bool, int?>(true, result);
         }
 
         public bool DeleteRoom(int roomId)
         {
-            return true;
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"DELETE FROM rooms WHERE id = {roomId};";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
+                }
+
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return false;
+            }
+            return result;
         }
 
         public Tuple<bool, string?> UpdateRoom(string newRoomName, int roomId)
+        {
+            return new Tuple<bool, string?>(true, "");
+        }
+
+        public Tuple<bool, string?> AssignThermostatToRoom(string newRoomName, int roomId)
         {
             return new Tuple<bool, string?>(true, "");
         }

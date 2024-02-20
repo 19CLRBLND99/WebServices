@@ -1,9 +1,9 @@
 ## Jan 
 - db services 
   - room
-    - add
     - updateroom
     - updateroomtemp
+    - assignthermostat
 ## Peter
 - db -> controller 
   - getRoomByRoomId
