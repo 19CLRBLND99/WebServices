@@ -15,11 +15,7 @@ namespace WebServicesBackend.Controllers
         {
             var thermostatService = new ThermostatService();
             var result = thermostatService.AddThermostat();
-            if (result.Item1)
-            {
-                return Ok(result.Item2);
-            }
-            return BadRequest();
+            return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
 
         [Route("/DeleteThermostat")]
@@ -28,11 +24,7 @@ namespace WebServicesBackend.Controllers
         {
             var thermostatService = new ThermostatService();
             var result = thermostatService.DeleteThermostat(thermostatId);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return (result) ? Ok() : BadRequest();
         }
     }
 }
