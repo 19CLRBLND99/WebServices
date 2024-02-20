@@ -9,13 +9,14 @@ namespace WebServicesBackend.Database
         public Tuple<bool,int?> AddThermostat()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
+            int result=-1;
 
             try
             {
                 connection.Open();
-                Console.WriteLine("Verbindung erfolgreich geöffnet!");
+                Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = "SELECT * FROM rooms"; 
+                string sqlStatement = "INSERT INTO thermostat VALUES(NULL,NULL); SELECT last_insert_id();"; 
 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
@@ -23,22 +24,47 @@ namespace WebServicesBackend.Database
                 {
                     while (reader.Read())
                     {
-                        Console.WriteLine();
+                        result = reader.GetInt32(0);
+                        Console.WriteLine(result);
                     }
                 }
                 connection.Close();
-
             }
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new Tuple<bool, int?>( false, 0 );
             }
+            return new Tuple<bool, int?>(true, result);
         }
 
         public bool DeleteThermostat(int thermostatId)
         {
-            //TODO implement deleting stuff and after deleting thermostat return true 
-            return true;
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"DELETE FROM thermostat WHERE id = {thermostatId};";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result =  (rowsAffected == 1 ) ? true : false;
+                } 
+
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return false;
+            }
+            return result;
         }
     }
 }

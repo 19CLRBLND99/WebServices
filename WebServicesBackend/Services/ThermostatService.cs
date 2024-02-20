@@ -22,6 +22,8 @@ namespace WebServicesBackend.Services
         /// <returns>a boolean which indicates whether the deleting process was successfull or not</returns>
         public bool DeleteThermostat(int thermostatId)
         {
+
+            //Check vor valid ID!
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.DeleteThermostat(thermostatId);
 
