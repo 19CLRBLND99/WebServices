@@ -2,12 +2,8 @@
 - db services 
   - room
     - add
-    - delete
     - updateroom
     - updateroomtemp
-  - thermostat  
-    - add 
-    - delete 
 ## Peter
 - db -> controller 
   - getRoomByRoomId
