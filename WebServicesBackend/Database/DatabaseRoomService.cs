@@ -147,7 +147,7 @@ namespace WebServicesBackend.Database
 
                     result = (rowsAffected == 1) ? true : false;
                 
-                    MySqlDataReader reader = command.ExecuteReader())
+                    MySqlDataReader reader = command.ExecuteReader();
                 
                     while (reader.Read())
                     {

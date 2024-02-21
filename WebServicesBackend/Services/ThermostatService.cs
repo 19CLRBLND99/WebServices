@@ -23,21 +23,24 @@ namespace WebServicesBackend.Services
         public bool DeleteThermostat(int thermostatId)
         {
 
-            //Check vor valid ID!
+            //Check for valid ID!
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.DeleteThermostat(thermostatId);
 
             return (result) ? true : false; 
         }
 
-        //TODO IMPLEMENT STUFF 
-        public void SetThermostatTemperature(int? thermostatId, double newTemperature)
+        //TODO REWORK 
+        public bool SetThermostatTemperature(int? thermostatId, double newTemperature)
         {
             if (thermostatId == null)
             {
-                return;
+                return false;
             }
-            Console.WriteLine(newTemperature); // api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt 
+            var thermostatDbService = new DatabaseThermostatService();
+            var result = thermostatDbService.SetThermostatTemperature(thermostatId, newTemperature);
+            Console.WriteLine(newTemperature); //TODO  api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt ???
+            return true;
         }
     }
 }

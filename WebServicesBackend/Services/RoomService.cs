@@ -74,11 +74,12 @@ namespace WebServicesBackend.Services
 
             var thermostatId = result.Item2;
 
-            thermostatService.SetThermostatTemperature(result.Item2, newTemperature); 
+            thermostatService.SetThermostatTemperature(thermostatId, newTemperature); 
 
             return (result.Item1) ? true : false;
         }
 
+        //TODO comment 
         public RoomModel GetRoomById(int roomId) { 
             var roomDbService = new DatabaseRoomService();
             var result = roomDbService.GetRoomById(roomId);
@@ -86,6 +87,7 @@ namespace WebServicesBackend.Services
             return result;
         }
 
+        //TODO comment 
         public List<RoomModel> GetAllRooms()
         {
             var roomDbService = new DatabaseRoomService();

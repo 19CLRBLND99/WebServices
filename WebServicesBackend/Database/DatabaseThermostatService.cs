@@ -6,17 +6,17 @@ namespace WebServicesBackend.Database
     public class DatabaseThermostatService
     {
         string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
-        public Tuple<bool,int?> AddThermostat()
+        public Tuple<bool, int?> AddThermostat()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
-            int result=-1;
+            int result = -1;
 
             try
             {
                 connection.Open();
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = "INSERT INTO thermostat VALUES(NULL,NULL); SELECT last_insert_id();"; 
+                string sqlStatement = "INSERT INTO thermostat VALUES(NULL,NULL); SELECT last_insert_id();";
 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
@@ -33,7 +33,7 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new Tuple<bool, int?>( false, 0 );
+                return new Tuple<bool, int?>(false, 0);
             }
             return new Tuple<bool, int?>(true, result);
         }
@@ -54,8 +54,37 @@ namespace WebServicesBackend.Database
                 {
                     int rowsAffected = command.ExecuteNonQuery();
 
-                    result =  (rowsAffected == 1 ) ? true : false;
-                } 
+                    result = (rowsAffected == 1) ? true : false;
+                }
+
+                connection.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return false;
+            }
+            return result;
+        }
+
+        public bool SetThermostatTemperature(int? thermostatId, double newTemperature)
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            bool result;
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"UPDATE thermostat SET temperature = '{newTemperature}' WHERE id = {thermostatId};";
+
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
+                {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
+                }
 
                 connection.Close();
             }
