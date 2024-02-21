@@ -5,7 +5,7 @@ namespace WebServicesBackend.Database
 {
     public class DatabaseRoomService
     {
-        string connectionString = "Server=172.30.224.1;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
 
         public Tuple<bool, int?> AddRoom(string roomName)
         {
@@ -18,8 +18,7 @@ namespace WebServicesBackend.Database
 
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", '21.3',NULL); SELECT last_insert_id();"; // 21.3 is the default room temperature when a new room is created! 
-
+                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", NULL); SELECT last_insert_id();"; 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
@@ -27,7 +26,6 @@ namespace WebServicesBackend.Database
                     while (reader.Read())
                     {
                         result = reader.GetInt32(0);
-                        Console.WriteLine(result);
                     }
                 }
                 connection.Close();
@@ -37,6 +35,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return new Tuple<bool, int?>(false, 0);
             }
+
+            Console.WriteLine("Added new Room with Id: " + result);
             return new Tuple<bool, int?>(true, result);
         }
 
@@ -66,6 +66,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return false;
             }
+
+            Console.WriteLine("Added new Room with Id: " + roomId);
             return result;
         }
 
@@ -77,7 +79,6 @@ namespace WebServicesBackend.Database
             try
             {
                 connection.Open();
-
                 Console.WriteLine("Successfully connected to DB");
 
                 string sqlStatement = $"UPDATE rooms SET name = \"{newRoomName}\" WHERE id = {roomId};";
@@ -95,6 +96,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return new Tuple<bool, string?>(false, null);
             }
+
+            Console.WriteLine("Updated Name of the room with Id '" + roomId +"' to new Name: \""+ newRoomName +"\"");
             return new Tuple<bool, string?>(true, newRoomName);
         }
 
@@ -124,6 +127,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return false;
             }
+
+            Console.WriteLine("Assigned Thermostat with Id '" + thermostatId + "' to the Room with Id '" + roomId+ "'");
             return result;
         }
 
@@ -159,6 +164,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return new Tuple<bool,int?>(false,null);
             }
+
+            Console.WriteLine("Returned thermostatId("+thermostatId+") for room with Id '" + roomId + "'");
             return new Tuple<bool,int?>(result,thermostatId);
         }
 
@@ -168,7 +175,7 @@ namespace WebServicesBackend.Database
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT id, name, temperature, thermostatID FROM rooms WHERE id = @RoomId";
+                string query = "SELECT id, name, thermostatID FROM rooms WHERE id = @RoomId";
 
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@RoomId", roomId);
@@ -183,7 +190,7 @@ namespace WebServicesBackend.Database
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
                     };
-                    if (!reader.IsDBNull(3))
+                    if (!reader.IsDBNull(2))
                     {
                         room.ThermostatId = Convert.ToInt32(reader["thermostatID"]);
                     }
@@ -195,6 +202,7 @@ namespace WebServicesBackend.Database
                 reader.Close();
             }
 
+            Console.WriteLine("Returned data for room with Id '" + roomId + "'");
             return room;
         }
 
@@ -204,7 +212,7 @@ namespace WebServicesBackend.Database
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "SELECT id, name, temperature, thermostatID FROM rooms";
+                string query = "SELECT id, name, thermostatID FROM rooms";
 
                 MySqlCommand command = new MySqlCommand(query, connection);
 
@@ -218,7 +226,7 @@ namespace WebServicesBackend.Database
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
                     };
-                    if (!reader.IsDBNull(3))
+                    if (!reader.IsDBNull(2))
                     {
                         room.ThermostatId = Convert.ToInt32(reader["thermostatID"]);
                     }
@@ -231,7 +239,7 @@ namespace WebServicesBackend.Database
 
                 reader.Close();
             }
-
+            Console.WriteLine("Returned data for all rooms");
             return rooms;
         }
 

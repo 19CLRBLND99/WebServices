@@ -1,11 +1,10 @@
-﻿
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 
 namespace WebServicesBackend.Database
 {
     public class DatabaseThermostatService
     {
-        string connectionString = "Server=172.30.224.1;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
         public Tuple<bool, int?> AddThermostat()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
@@ -25,16 +24,18 @@ namespace WebServicesBackend.Database
                     while (reader.Read())
                     {
                         result = reader.GetInt32(0);
-                        Console.WriteLine(result);
                     }
                 }
                 connection.Close();
             }
+
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return new Tuple<bool, int?>(false, 0);
             }
+
+            Console.WriteLine("Added new Thermostat with Id: " + result);
             return new Tuple<bool, int?>(true, result);
         }
 
@@ -64,6 +65,8 @@ namespace WebServicesBackend.Database
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
                 return false;
             }
+
+            Console.WriteLine("Deleted Thermostat with Id: " + thermostatId);
             return result;
         }
     }
