@@ -79,7 +79,12 @@ namespace WebServicesBackend.Services
             return (result.Item1) ? true : false;
         }
 
-        //TODO comment 
+
+        /// <summary>
+        /// method which is used for getting a room via its id
+        /// </summary>
+        /// <param name="roomId">the id of the to be returned room </param>
+        /// <returns>the roomModel</returns>
         public RoomModel GetRoomById(int roomId) { 
             var roomDbService = new DatabaseRoomService();
             var result = roomDbService.GetRoomById(roomId);
@@ -87,7 +92,10 @@ namespace WebServicesBackend.Services
             return result;
         }
 
-        //TODO comment 
+        /// <summary>
+        /// method which is used for getting all rooms
+        /// </summary>
+        /// <returns>a list of roomModels</returns>
         public List<RoomModel> GetAllRooms()
         {
             var roomDbService = new DatabaseRoomService();

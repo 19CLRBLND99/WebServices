@@ -5,7 +5,7 @@ namespace WebServicesBackend.Database
 {
     public class DatabaseRoomService
     {
-        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=172.30.224.1;Database=SmartHomeDB;User ID=root;Password=password;";
 
         public Tuple<bool, int?> AddRoom(string roomName)
         {
@@ -182,8 +182,14 @@ namespace WebServicesBackend.Database
                     {
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
-                        //ThermostatId = Convert.ToInt32(reader["thermostatID"])
                     };
+                    if (!reader.IsDBNull(3))
+                    {
+                        room.ThermostatId = Convert.ToInt32(reader["thermostatID"]);
+                    }
+                    else {
+                        room.ThermostatId = -1;
+                    }
                 }
 
                 reader.Close();
@@ -211,8 +217,15 @@ namespace WebServicesBackend.Database
                     {
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
-                        //ThermostatId = Convert.ToInt32(reader["thermostatID"])
                     };
+                    if (!reader.IsDBNull(3))
+                    {
+                        room.ThermostatId = Convert.ToInt32(reader["thermostatID"]);
+                    }
+                    else
+                    {
+                        room.ThermostatId = -1;
+                    }
                     rooms.Add(room);
                 }
 

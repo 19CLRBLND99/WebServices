@@ -5,7 +5,7 @@ namespace WebServicesBackend.Database
 {
     public class DatabaseThermostatService
     {
-        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=172.30.224.1;Database=SmartHomeDB;User ID=root;Password=password;";
         public Tuple<bool, int?> AddThermostat()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
