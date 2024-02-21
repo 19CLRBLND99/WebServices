@@ -2,7 +2,7 @@
 {
     public class ThermostatModel
     {
-        int ThermostatId;
-        double Temperature;
+        int ThermostatId { get; set; }
+        double Temperature { get; set; }
     }
 }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using WebServicesBackend.Models;
 using WebServicesBackend.Services;
 
 namespace WebServicesBackend.Controllers
@@ -59,7 +61,6 @@ namespace WebServicesBackend.Controllers
             var roomService = new RoomService();
             var result = roomService.GetRoomById(roomId);
             return (result  != null)? Ok(result) : BadRequest();
-            
         }
 
         [Route("/GetAllRooms")]

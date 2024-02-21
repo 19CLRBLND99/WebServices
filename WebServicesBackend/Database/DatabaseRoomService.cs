@@ -18,7 +18,7 @@ namespace WebServicesBackend.Database
 
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", '21.3',NULL); SELECT last_insert_id();";
+                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", '21.3',NULL); SELECT last_insert_id();"; // 21.3 is the default room temperature when a new room is created! 
 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
@@ -108,7 +108,7 @@ namespace WebServicesBackend.Database
                 connection.Open();
 
                 Console.WriteLine("Successfully connected to DB");
-
+                // TODO check if thermostat already is assigned!!! 
                 string sqlStatement = $"UPDATE rooms SET thermostatID = '{thermostatId}' WHERE id = {roomId};";
 
                 using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
@@ -127,7 +127,7 @@ namespace WebServicesBackend.Database
             return result;
         }
 
-        public Tuple<bool,int?> UpdateRoomTemperature(int roomId, double newTemperature)
+        public Tuple<bool,int?> GetThermostatIdByRoomId(int roomId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             bool result;
@@ -139,16 +139,14 @@ namespace WebServicesBackend.Database
 
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"UPDATE rooms SET temperature = '{newTemperature}' WHERE id = {roomId}; SELECT thermostatID FROM rooms WHERE id = {roomId}; ";
+                string sqlStatement = $"SELECT thermostatID FROM rooms WHERE id = {roomId}; ";
 
                 using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
                 {
                     int rowsAffected = command.ExecuteNonQuery();
-
                     result = (rowsAffected == 1) ? true : false;
                 
                     MySqlDataReader reader = command.ExecuteReader();
-                
                     while (reader.Read())
                     {
                         thermostatId = reader.GetInt32(0);
@@ -166,7 +164,7 @@ namespace WebServicesBackend.Database
 
         public RoomModel GetRoomById(int roomId)
         {
-            RoomModel room = null;
+            RoomModel room = new RoomModel();
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -178,14 +176,13 @@ namespace WebServicesBackend.Database
                 connection.Open();
                 MySqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
+                while (reader.Read())
                 {
                     room = new RoomModel
                     {
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
-                        RoomTemperature = Convert.ToDouble(reader["temperature"]),
-                        ThermostatId = Convert.ToInt32(reader["thermostatID"])
+                        //ThermostatId = Convert.ToInt32(reader["thermostatID"])
                     };
                 }
 
@@ -214,8 +211,7 @@ namespace WebServicesBackend.Database
                     {
                         RoomId = Convert.ToInt32(reader["id"]),
                         RoomName = Convert.ToString(reader["name"]),
-                        RoomTemperature = Convert.ToDouble(reader["temperature"]),
-                        ThermostatId = Convert.ToInt32(reader["thermostatID"])
+                        //ThermostatId = Convert.ToInt32(reader["thermostatID"])
                     };
                     rooms.Add(room);
                 }

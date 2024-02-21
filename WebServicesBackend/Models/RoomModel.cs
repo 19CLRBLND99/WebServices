@@ -2,9 +2,8 @@
 {
     public class RoomModel
     {
-        public int RoomId;
-        public string RoomName;
-        public double RoomTemperature;
-        public int ThermostatId;
+        public int RoomId { get; set; }
+        public string RoomName { get; set; }
+        public int ThermostatId { get; set; }
     }
 }

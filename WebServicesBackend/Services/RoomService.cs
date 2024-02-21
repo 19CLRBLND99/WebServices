@@ -70,7 +70,7 @@ namespace WebServicesBackend.Services
         {
             var roomDbService = new DatabaseRoomService();
             var thermostatService = new ThermostatService();
-            var result = roomDbService.UpdateRoomTemperature(roomId, newTemperature);
+            var result = roomDbService.GetThermostatIdByRoomId(roomId);
 
             var thermostatId = result.Item2;
 
