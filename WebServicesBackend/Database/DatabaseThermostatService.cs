@@ -66,34 +66,5 @@ namespace WebServicesBackend.Database
             }
             return result;
         }
-
-        public bool SetThermostatTemperature(int? thermostatId, double newTemperature)
-        {
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            bool result;
-
-            try
-            {
-                connection.Open();
-                Console.WriteLine("Successfully connected to DB");
-
-                string sqlStatement = $"UPDATE thermostat SET temperature = '{newTemperature}' WHERE id = {thermostatId};";
-
-                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
-                {
-                    int rowsAffected = command.ExecuteNonQuery();
-
-                    result = (rowsAffected == 1) ? true : false;
-                }
-
-                connection.Close();
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return false;
-            }
-            return result;
-        }
     }
 }
