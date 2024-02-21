@@ -243,5 +243,37 @@ namespace WebServicesBackend.Database
             return rooms;
         }
 
+        public List<int>? GetAllRoomIds()
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            List<int> roomIds = new List<int>();
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = "SELECT id FROM rooms";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        roomIds.Add(reader.GetInt32(0));
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return null;
+            }
+
+            return roomIds;
+        }
     }
 }

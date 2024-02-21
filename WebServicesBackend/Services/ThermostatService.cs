@@ -1,4 +1,5 @@
 ﻿using WebServicesBackend.Database;
+using WebServicesBackend.HelperFunctions;
 
 namespace WebServicesBackend.Services
 {
@@ -12,6 +13,9 @@ namespace WebServicesBackend.Services
         {
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.AddThermostat();
+
+            HelperFunctionsClass.GetNextFreeThermostatId();
+
 
             return (result.Item1) ? result : new Tuple<bool, int?>(false,null);
         }

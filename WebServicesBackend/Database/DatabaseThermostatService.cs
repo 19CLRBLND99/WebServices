@@ -1,4 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
+using System.Reflection.PortableExecutable;
 
 namespace WebServicesBackend.Database
 {
@@ -68,6 +70,39 @@ namespace WebServicesBackend.Database
 
             Console.WriteLine("Deleted Thermostat with Id: " + thermostatId);
             return result;
+        }
+
+        public List<int>? GetAllThermostatIds()
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            List<int> thermostatIds = new List<int>();
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = "SELECT id FROM thermostat";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        thermostatIds.Add(reader.GetInt32(0));
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return null;          
+            }
+
+            return thermostatIds;
         }
     }
 }
