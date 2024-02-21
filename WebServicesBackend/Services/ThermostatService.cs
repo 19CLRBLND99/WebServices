@@ -36,7 +36,8 @@ namespace WebServicesBackend.Services
             {
                 return false;
             }
-            // kein DB call in dieser API sondern call an Niklas API/ an das entsprechende Thermometer welches dann auf die DB zugreift und die Temp dort ändert und dann auch im jeweiligen container logt 
+            // ändern der temperatur in der DB 
+            // call an Niklas API/ an das entsprechende Thermometer welches dann auf die DB zugreift und die Temp dort ändert und dann auch im jeweiligen container logt 
             // call von niklas Endpunkt sollte true oder false zurückliefern! 
             //TODO  api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt ???
             return true;

@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using WebServicesBackend.Models;
 using WebServicesBackend.Services;
 
 namespace WebServicesBackend.Controllers
@@ -41,7 +39,7 @@ namespace WebServicesBackend.Controllers
         public IActionResult UpdateRoomTemperature(int roomId, double newTemperature)
         {
             var roomService = new RoomService();
-            var result = roomService.UpdateRoomTemperature(roomId,newTemperature);
+            var result = roomService.UpdateRoomTemperature(roomId, newTemperature);
             return (result) ? Ok(newTemperature) : BadRequest();
         }
 
@@ -60,7 +58,7 @@ namespace WebServicesBackend.Controllers
         {
             var roomService = new RoomService();
             var result = roomService.GetRoomById(roomId);
-            return (result  != null)? Ok(result) : BadRequest();
+            return (result != null) ? Ok(result) : BadRequest();
         }
 
         [Route("/GetAllRooms")]
