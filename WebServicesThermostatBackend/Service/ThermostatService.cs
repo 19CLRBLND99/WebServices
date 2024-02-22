@@ -17,5 +17,17 @@ namespace ThermostatBackend.Service
             var result = ThermostatModel.setID(newId);
             return (result.Item1) ? result : new Tuple<bool, int?>(false, null);
         }
+
+        public static Tuple<bool, int?> getID()
+        {
+            var result = ThermostatModel.getID();
+            return (result.Item1) ? result : new Tuple<bool, int?>(false, null);
+        }
+
+        public static Tuple<bool, float> getTemperature()
+        {
+            var result = ThermostatModel.getTemperature();
+            return (result.Item1) ? result : new Tuple<bool, float>(false, float.NaN);
+        }
     }
 }

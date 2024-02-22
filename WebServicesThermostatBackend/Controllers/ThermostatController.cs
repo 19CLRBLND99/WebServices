@@ -23,5 +23,21 @@ namespace ThermostatBackend.Controllers
             var result = ThermostatService.setID(id);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
         }
+
+        [Route("/getTemperature")]
+        [HttpGet]
+
+        public IActionResult getTemperature()
+        {
+            var result = ThermostatService.getTemperature();
+            return (result.Item1) ? Ok(result.Item2) : BadRequest();
+        }
+        [Route("/getThermostatId")]
+        [HttpGet]
+        public IActionResult getThermostatId()
+        {
+            var result = ThermostatService.getID();
+            return (result.Item1) ? Ok(result.Item2) : BadRequest();
+        }
     }
 }

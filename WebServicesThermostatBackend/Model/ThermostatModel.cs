@@ -3,8 +3,8 @@
     public static class ThermostatModel
     {
 
-        private static float temperature = 0;
-        private static int ownId = 0;
+        private static float temperature;
+        private static int ownId;
         public static Tuple<bool, float> setTemperature(float temperatureUpdate)
         {
             float tempTemperature = temperature;
@@ -17,6 +17,16 @@
         {
             ownId = newId;
             return new Tuple<bool, int?>(true,ownId);
+        }
+
+        public static Tuple<bool, int?> getID()
+        {
+            return new Tuple<bool, int?>(true, ownId);
+        }
+
+        public static Tuple<bool, float> getTemperature()
+        {
+            return new Tuple<bool, float>(true, temperature);
         }
     }
 }
