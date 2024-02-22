@@ -1,8 +1,6 @@
 ## Jan 
 - SetThermostatTemperature
 - check if thermostat already is assigned when assigning thermostat to room 
-- Switch form DB auto increment to first free id!!! 
-  - ALTER Tables and remove auto increment! 
 
 ## Peter
 - db -> controller 

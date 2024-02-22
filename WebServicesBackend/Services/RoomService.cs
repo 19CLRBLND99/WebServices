@@ -1,4 +1,5 @@
 ﻿using WebServicesBackend.Database;
+using WebServicesBackend.HelperFunctions;
 using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Services
@@ -12,8 +13,10 @@ namespace WebServicesBackend.Services
         /// <returns>A tuple of a boolean and an integer. the boolean indicates whether the creation was successfull or not and the integer is the id of the newly created room </returns>
         public Tuple<bool, int?> AddRoom(string roomName)
         {
+            var roomId = HelperFunctionsClass.GetNextFreeRoomId();
+
             var roomDbService = new DatabaseRoomService();
-            var result = roomDbService.AddRoom(roomName);
+            var result = roomDbService.AddRoom(roomName, roomId);
 
             return (result.Item1) ? result : new Tuple<bool, int?>(false, null);
         }

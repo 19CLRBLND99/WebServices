@@ -7,10 +7,9 @@ namespace WebServicesBackend.Database
     {
         string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
 
-        public Tuple<bool, int?> AddRoom(string roomName)
+        public Tuple<bool, int?> AddRoom(string roomName, int? roomId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
-            int result = -1;
 
             try
             {
@@ -18,15 +17,11 @@ namespace WebServicesBackend.Database
 
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"INSERT INTO rooms VALUES(NULL,\"{roomName}\", NULL); SELECT last_insert_id();"; 
+                string sqlStatement = $"INSERT INTO rooms VALUES({roomId},\"{roomName}\", NULL);"; 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        result = reader.GetInt32(0);
-                    }
                 }
                 connection.Close();
             }
@@ -36,8 +31,8 @@ namespace WebServicesBackend.Database
                 return new Tuple<bool, int?>(false, 0);
             }
 
-            Console.WriteLine("Added new Room with Id: " + result);
-            return new Tuple<bool, int?>(true, result);
+            Console.WriteLine("Added new Room with Id: " + roomId);
+            return new Tuple<bool, int?>(true, roomId);
         }
 
         public bool DeleteRoom(int roomId)

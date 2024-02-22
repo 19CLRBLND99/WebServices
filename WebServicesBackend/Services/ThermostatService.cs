@@ -11,11 +11,10 @@ namespace WebServicesBackend.Services
         /// <returns>a Tuple which contains a boolean and a nullable int. The boolean and int indicate whether the creation was successfull or not</returns>
         public Tuple<bool, int?> AddThermostat()
         {
+            var newId = HelperFunctionsClass.GetNextFreeThermostatId();
+
             var thermostatDbService = new DatabaseThermostatService();
-            var result = thermostatDbService.AddThermostat();
-
-            HelperFunctionsClass.GetNextFreeThermostatId();
-
+            var result = thermostatDbService.AddThermostat(newId);
 
             return (result.Item1) ? result : new Tuple<bool, int?>(false,null);
         }

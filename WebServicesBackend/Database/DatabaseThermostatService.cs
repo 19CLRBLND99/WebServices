@@ -7,7 +7,7 @@ namespace WebServicesBackend.Database
     public class DatabaseThermostatService
     {
         string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
-        public Tuple<bool, int?> AddThermostat()
+        public Tuple<bool, int?> AddThermostat(int? thermostatId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             int result = -1;
@@ -17,7 +17,7 @@ namespace WebServicesBackend.Database
                 connection.Open();
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = "INSERT INTO thermostat VALUES(NULL,NULL); SELECT last_insert_id();";
+                string sqlStatement = $"INSERT INTO thermostat VALUES({thermostatId},NULL);";
 
                 MySqlCommand command = new MySqlCommand(sqlStatement, connection);
 
@@ -37,7 +37,7 @@ namespace WebServicesBackend.Database
                 return new Tuple<bool, int?>(false, 0);
             }
 
-            Console.WriteLine("Added new Thermostat with Id: " + result);
+            Console.WriteLine("Added new Thermostat with Id: " + thermostatId);
             return new Tuple<bool, int?>(true, result);
         }
 
