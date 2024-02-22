@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WpL0sxm7nEM86xbOaejiQaxxGgnmwEtVb2+fYWacukU=",
+  "Source": "ThermostatBackend",
+  "BasePath": "_content/ThermostatBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
