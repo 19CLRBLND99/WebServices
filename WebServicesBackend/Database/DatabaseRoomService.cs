@@ -10,6 +10,7 @@ namespace WebServicesBackend.Database
         public Tuple<bool, int?> AddRoom(string roomName, int? roomId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
+            var result = false;
 
             try
             {
@@ -17,22 +18,23 @@ namespace WebServicesBackend.Database
 
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"INSERT INTO rooms VALUES({roomId},\"{roomName}\", NULL);"; 
-                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+                string sqlStatement = $"INSERT INTO rooms VALUES({roomId},\"{roomName}\", 0);";
 
-                using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
                 {
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
                 }
-                connection.Close();
             }
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new Tuple<bool, int?>(false, 0);
+                return new Tuple<bool, int?>(result, -1);
             }
 
             Console.WriteLine("Added new Room with Id: " + roomId);
-            return new Tuple<bool, int?>(true, roomId);
+            return new Tuple<bool, int?>(result, roomId);
         }
 
         public bool DeleteRoom(int roomId)
@@ -92,7 +94,7 @@ namespace WebServicesBackend.Database
                 return new Tuple<bool, string?>(false, null);
             }
 
-            Console.WriteLine("Updated Name of the room with Id '" + roomId +"' to new Name: \""+ newRoomName +"\"");
+            Console.WriteLine("Updated Name of the room with Id '" + roomId + "' to new Name: \"" + newRoomName + "\"");
             return new Tuple<bool, string?>(true, newRoomName);
         }
 
@@ -123,11 +125,11 @@ namespace WebServicesBackend.Database
                 return false;
             }
 
-            Console.WriteLine("Assigned Thermostat with Id '" + thermostatId + "' to the Room with Id '" + roomId+ "'");
+            Console.WriteLine("Assigned Thermostat with Id '" + thermostatId + "' to the Room with Id '" + roomId + "'");
             return result;
         }
 
-        public Tuple<bool,int?> GetThermostatIdByRoomId(int roomId)
+        public Tuple<bool, int?> GetThermostatIdByRoomId(int roomId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             bool result;
@@ -145,7 +147,7 @@ namespace WebServicesBackend.Database
                 {
                     int rowsAffected = command.ExecuteNonQuery();
                     result = (rowsAffected == 1) ? true : false;
-                
+
                     MySqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
@@ -157,11 +159,11 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new Tuple<bool,int?>(false,null);
+                return new Tuple<bool, int?>(false, null);
             }
 
-            Console.WriteLine("Returned thermostatId("+thermostatId+") for room with Id '" + roomId + "'");
-            return new Tuple<bool,int?>(result,thermostatId);
+            Console.WriteLine("Returned thermostatId(" + thermostatId + ") for room with Id '" + roomId + "'");
+            return new Tuple<bool, int?>(result, thermostatId);
         }
 
         public RoomModel GetRoomById(int roomId)
@@ -189,7 +191,8 @@ namespace WebServicesBackend.Database
                     {
                         room.ThermostatId = Convert.ToInt32(reader["thermostatID"]);
                     }
-                    else {
+                    else
+                    {
                         room.ThermostatId = -1;
                     }
                 }

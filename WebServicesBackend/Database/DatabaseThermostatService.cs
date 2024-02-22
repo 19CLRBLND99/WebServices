@@ -10,7 +10,7 @@ namespace WebServicesBackend.Database
         public Tuple<bool, int?> AddThermostat(int? thermostatId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
-            int result = -1;
+            var result = false;
 
             try
             {
@@ -19,14 +19,11 @@ namespace WebServicesBackend.Database
 
                 string sqlStatement = $"INSERT INTO thermostat VALUES({thermostatId},NULL);";
 
-                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
-
-                using (MySqlDataReader reader = command.ExecuteReader())
+                using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
                 {
-                    while (reader.Read())
-                    {
-                        result = reader.GetInt32(0);
-                    }
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    result = (rowsAffected == 1) ? true : false;
                 }
                 connection.Close();
             }
@@ -34,11 +31,11 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new Tuple<bool, int?>(false, 0);
+                return new Tuple<bool, int?>(result,-1);
             }
 
             Console.WriteLine("Added new Thermostat with Id: " + thermostatId);
-            return new Tuple<bool, int?>(true, result);
+            return new Tuple<bool, int?>(result, thermostatId);
         }
 
         public bool DeleteThermostat(int thermostatId)
@@ -72,7 +69,7 @@ namespace WebServicesBackend.Database
             return result;
         }
 
-        public List<int>? GetAllThermostatIds()
+        public List<int> GetAllThermostatIds()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             List<int> thermostatIds = new List<int>();
@@ -99,7 +96,40 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return null;          
+                return new List<int>();          
+            }
+
+            return thermostatIds;
+        }
+
+        public List<int> GetAllAssignedThermostatIds()
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            List<int> thermostatIds = new List<int>();
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = "SELECT thermostatID FROM rooms";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        thermostatIds.Add(reader.GetInt32(0));
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new List<int>();
             }
 
             return thermostatIds;

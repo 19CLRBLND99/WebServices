@@ -26,5 +26,18 @@ namespace WebServicesBackend.Controllers
             var result = thermostatService.DeleteThermostat(thermostatId);
             return (result) ? Ok() : BadRequest();
         }
+        [Route("/GetAllThermostatIds")]
+        [HttpGet]
+        public IActionResult GetAllThermostatIds()
+        {
+            var thermostatService = new ThermostatService();
+            var result = thermostatService.GetAllThermostatIds();
+            if(result.Count() > 0)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+        
     }
 }

@@ -45,5 +45,12 @@ namespace WebServicesBackend.Services
             //TODO  api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt ???
             return true;
         }
+
+        public List<int> GetAllThermostatIds()
+        {
+            var thermostatDbService = new DatabaseThermostatService();
+            var result = thermostatDbService.GetAllThermostatIds();
+            return result;
+        }
     }
 }

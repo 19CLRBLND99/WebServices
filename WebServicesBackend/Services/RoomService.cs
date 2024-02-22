@@ -57,6 +57,12 @@ namespace WebServicesBackend.Services
         public bool AssignThermostatToRoom(int roomId, int thermostatId)
         {
             var roomDbService = new DatabaseRoomService();
+            var thermostatDbService = new DatabaseThermostatService();
+            var allThermostatIds = thermostatDbService.GetAllAssignedThermostatIds();
+            if (allThermostatIds.Contains(thermostatId))
+            {
+                return false;
+            }
             var result = roomDbService.AssignThermostatToRoom(roomId, thermostatId);
 
             return (result) ? true : false;

@@ -53,7 +53,7 @@ namespace WebServicesBackend.Controllers
         }
 
         [Route("/GetRoomById")]
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetRoomByRoomId(int roomId)
         {
             var roomService = new RoomService();
@@ -62,7 +62,7 @@ namespace WebServicesBackend.Controllers
         }
 
         [Route("/GetAllRooms")]
-        [HttpPost]
+        [HttpGet]
         public IActionResult GetAllRooms()
         {
             var roomService = new RoomService();
