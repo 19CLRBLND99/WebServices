@@ -1,3 +1,16 @@
 <!--Defines the HTML template associated with the root AppComponent.--> 
 
-<p>Hello</p>
+<main class="main">
+    <div class="content">
+        Rooms: 
+        <table>
+            @for(room of rooms;track "room.roomId"){
+                <tr>
+                    <td>{{room.roomId}}</td>
+                    <td>{{room.roomName}}</td>
+                    <td>{{room.thermostatId}}</td>
+                </tr>
+            }
+        </table>
+    </div>
+</main>
