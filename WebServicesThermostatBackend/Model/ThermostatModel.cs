@@ -3,14 +3,14 @@
     public static class ThermostatModel
     {
 
-        private static float temperature;
+        private static double temperature;
         private static int ownId;
-        public static Tuple<bool, float> setTemperature(float temperatureUpdate)
+        public static Tuple<bool, double> setTemperature(double temperatureUpdate)
         {
-            float tempTemperature = temperature;
+            double tempTemperature = temperature;
             temperature = temperatureUpdate;
             Console.WriteLine("The temperature of thermostat " + ownId + " got changed from " + tempTemperature + " to " + temperature + ".");
-            return new Tuple<bool,float>(true,temperature);
+            return new Tuple<bool, double>(true,temperature);
         }
 
         public static Tuple<bool, int?> setID(int newId)
@@ -24,9 +24,9 @@
             return new Tuple<bool, int?>(true, ownId);
         }
 
-        public static Tuple<bool, float> getTemperature()
+        public static Tuple<bool, double> getTemperature()
         {
-            return new Tuple<bool, float>(true, temperature);
+            return new Tuple<bool, double>(true, temperature);
         }
     }
 }

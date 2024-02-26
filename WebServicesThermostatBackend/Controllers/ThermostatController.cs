@@ -11,7 +11,7 @@ namespace ThermostatBackend.Controllers
         [Route("/updateTemperature")]
         [HttpPost]
 
-        public IActionResult updateTemperature(float temperature)
+        public IActionResult updateTemperature(double temperature)
         {
             var result = ThermostatService.updateTemperature(temperature);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
