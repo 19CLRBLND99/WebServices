@@ -8,23 +8,34 @@ namespace WebServicesBackend.HelperFunctions
         {
             var databaseThermostatService = new DatabaseThermostatService();
             var allThermostatIds = databaseThermostatService.GetAllThermostatIds();
-
-            int? firstAvailable = Enumerable.Range(1, int.MaxValue)
+            if (!allThermostatIds.Any())
+            {
+                int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allThermostatIds)
                                 .FirstOrDefault();
 
-            return firstAvailable;
+                return firstAvailable;
+            }
+            return 0;
+
+            
         }
         public static int? GetNextFreeRoomId()
         {
             var databaseRoomService = new DatabaseRoomService();
             var allRoomIds = databaseRoomService.GetAllRoomIds();
 
-            int? firstAvailable = Enumerable.Range(1, int.MaxValue)
+            if (!allRoomIds.Any())
+            {
+                int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allRoomIds)
                                 .FirstOrDefault();
 
-            return firstAvailable;
+                return firstAvailable;
+            }
+            return 0;
+
+            
         }
     }
 }
