@@ -56,14 +56,21 @@ namespace WebServicesBackend.Services
         /// <returns>a boolean which inidactes whether the assigning process was successfull or not </returns>
         public bool AssignThermostatToRoom(int roomId, int thermostatId)
         {
+            var result = false;
             var roomDbService = new DatabaseRoomService();
             var thermostatDbService = new DatabaseThermostatService();
-            var allThermostatIds = thermostatDbService.GetAllAssignedThermostatIds();
-            if (allThermostatIds.Contains(thermostatId))
+
+            var alreadyAssignedThermostatIds = roomDbService.GetAllAssignedThermostatIds();
+            var allAvailablethermostatIds = thermostatDbService.GetAllThermostatIds();
+
+            if (alreadyAssignedThermostatIds.Contains(thermostatId))
             {
                 return false;
             }
-            var result = roomDbService.AssignThermostatToRoom(roomId, thermostatId);
+            if (allAvailablethermostatIds.Contains(thermostatId))
+            {
+                result = roomDbService.AssignThermostatToRoom(roomId, thermostatId);
+            }
 
             return (result) ? true : false;
         }

@@ -64,7 +64,7 @@ namespace WebServicesBackend.Database
                 return false;
             }
 
-            Console.WriteLine("Added new Room with Id: " + roomId);
+            Console.WriteLine("Deleted Room with Id: " + roomId);
             return result;
         }
 
@@ -269,6 +269,40 @@ namespace WebServicesBackend.Database
             }
 
             return roomIds;
+        }
+
+
+        public List<int> GetAllAssignedThermostatIds()
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            List<int> thermostatIds = new List<int>();
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = "SELECT thermostatID FROM rooms";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        thermostatIds.Add(reader.GetInt32(0));
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return new List<int>();
+            }
+
+            return thermostatIds;
         }
     }
 }
