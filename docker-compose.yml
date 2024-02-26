@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mysql-rooms:
+    image: mysql:latest
+    container_name: mysql-rooms
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rooms_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init-rooms.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db_network
+
+  mysql-thermostat:
+    image: mysql:latest
+    container_name: mysql-thermostat
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: thermostat_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init-thermostat.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db_network
+
+networks:
+  db_network:

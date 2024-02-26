@@ -5,7 +5,7 @@ namespace WebServicesBackend.Database
 {
     public class DatabaseRoomService
     {
-        string connectionString = "Server=192.168.2.102;Database=SmartHomeDB;User ID=root;Password=password;";
+        string connectionString = "Server=mysql-rooms;Port=3306;Database=rooms_db;User ID=root;Password=password;";
 
         public Tuple<bool, int?> AddRoom(string roomName, int? roomId)
         {
