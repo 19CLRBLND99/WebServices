@@ -1,12 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
-using System.Reflection.PortableExecutable;
 
 namespace WebServicesBackend.Database
 {
     public class DatabaseThermostatService
     {
-        string connectionString = "Server=mysql-thermostat;Port=3307;Database=thermostat_db;User ID=root;Password=password;";
+        string connectionString = "Server=mysql-thermostat;Port=3306;Database=thermostat_db;User ID=root;Password=password;";
         public Tuple<bool, int?> AddThermostat(int? thermostatId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
@@ -31,7 +29,7 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new Tuple<bool, int?>(result,-1);
+                return new Tuple<bool, int?>(result, -1);
             }
 
             Console.WriteLine("Added new Thermostat with Id: " + thermostatId);
@@ -96,7 +94,7 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return new List<int>();          
+                return new List<int>();
             }
 
             return thermostatIds;
@@ -134,8 +132,8 @@ namespace WebServicesBackend.Database
 
             return thermostatIds;
         }
-    
-    
+
+
         public bool SetThermostatTemperature(int thermostatId, double newTemperature)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
