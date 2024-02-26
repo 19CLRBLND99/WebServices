@@ -8,7 +8,7 @@ namespace WebServicesBackend.HelperFunctions
         {
             var databaseThermostatService = new DatabaseThermostatService();
             var allThermostatIds = databaseThermostatService.GetAllThermostatIds();
-            if (allThermostatIds.Count() == 0)
+            if (allThermostatIds.Count() != 0)
             {
                 int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allThermostatIds)
@@ -17,15 +17,13 @@ namespace WebServicesBackend.HelperFunctions
                 return firstAvailable;
             }
             return 0;
-
-            
         }
         public static int? GetNextFreeRoomId()
         {
             var databaseRoomService = new DatabaseRoomService();
             var allRoomIds = databaseRoomService.GetAllRoomIds();
 
-            if (allRoomIds.Count() == 0)
+            if (allRoomIds.Count() != 0)
             {
                 int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allRoomIds)
@@ -34,8 +32,6 @@ namespace WebServicesBackend.HelperFunctions
                 return firstAvailable;
             }
             return 0;
-
-            
         }
     }
 }
