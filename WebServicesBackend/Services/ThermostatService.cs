@@ -1,4 +1,5 @@
-﻿using WebServicesBackend.Database;
+﻿using Google.Protobuf.WellKnownTypes;
+using WebServicesBackend.Database;
 using WebServicesBackend.HelperFunctions;
 
 namespace WebServicesBackend.Services
@@ -32,18 +33,30 @@ namespace WebServicesBackend.Services
             return (result) ? true : false; 
         }
 
-        //TODO REWORK 
-        public bool SetThermostatTemperature(int? thermostatId, double newTemperature)
+        public bool SetThermostatTemperature(int? possibleThermostatId, double newTemperature)
         {
-            if (thermostatId == null)
+            if (possibleThermostatId == null)
             {
                 return false;
             }
-            // ändern der temperatur in der DB 
-            // call an Niklas API/ an das entsprechende Thermometer welches dann auf die DB zugreift und die Temp dort ändert und dann auch im jeweiligen container logt 
-            // call von niklas Endpunkt sollte true oder false zurückliefern! 
-            //TODO  api (http put/post/..)  call an niklas API welche dann die temperature und das thermometer in die console logt ???
-            return true;
+            var thermostatId = Convert.ToInt32(possibleThermostatId);
+            Console.WriteLine("ThermostatId: " + thermostatId);
+            var thermostatPort = 3000 + thermostatId;
+            Console.WriteLine("ThermostatPort:" + thermostatPort);
+
+            //change hardcoded url
+            var thermostatUrl = $"https://192.168.2.102:32784/updateTemperature?temperature={newTemperature}";
+
+            var thermostatDbService = new DatabaseThermostatService();
+            var DbResult = thermostatDbService.SetThermostatTemperature(thermostatId, newTemperature);
+
+            var ThermostatResult = UpdateThermostatIdFromThermostat(thermostatUrl);
+            
+            if( DbResult && ThermostatResult.Result)
+            {
+                return true;
+            }
+            return false;
         }
 
         public List<int> GetAllThermostatIds()
@@ -52,5 +65,41 @@ namespace WebServicesBackend.Services
             var result = thermostatDbService.GetAllThermostatIds();
             return result;
         }
+
+
+
+        static async Task<bool> UpdateThermostatIdFromThermostat(string apiUrl)
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+
+            using (HttpClient httpClient = new HttpClient(clientHandler))
+            {
+                try
+                {
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null);
+                    Console.WriteLine("response: " + response);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Successfully updated Thermostat temperature");
+                        return true;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error while updating Thermostat temperature: {response.StatusCode} - {response.ReasonPhrase}");
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while updating Thermostat temperature: {ex.Message}");
+                    return false;
+                }
+            }
+        }
     }
+
 }
+

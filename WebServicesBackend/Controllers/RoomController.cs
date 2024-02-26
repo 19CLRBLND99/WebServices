@@ -68,7 +68,6 @@ namespace WebServicesBackend.Controllers
             var roomService = new RoomService();
             var result = roomService.GetAllRooms();
             return (result != null) ? Ok(result) : BadRequest();
-
         }
 
     }

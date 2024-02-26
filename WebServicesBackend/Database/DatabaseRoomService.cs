@@ -132,7 +132,6 @@ namespace WebServicesBackend.Database
         public Tuple<bool, int?> GetThermostatIdByRoomId(int roomId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
-            bool result;
             int thermostatId = -1;
 
             try
@@ -145,8 +144,6 @@ namespace WebServicesBackend.Database
 
                 using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
                 {
-                    int rowsAffected = command.ExecuteNonQuery();
-                    result = (rowsAffected == 1) ? true : false;
 
                     MySqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
@@ -163,7 +160,7 @@ namespace WebServicesBackend.Database
             }
 
             Console.WriteLine("Returned thermostatId(" + thermostatId + ") for room with Id '" + roomId + "'");
-            return new Tuple<bool, int?>(result, thermostatId);
+            return new Tuple<bool, int?>(true, thermostatId);
         }
 
         public RoomModel GetRoomById(int roomId)
