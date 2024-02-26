@@ -41,16 +41,16 @@ namespace WebServicesBackend.Services
             }
             var thermostatId = Convert.ToInt32(possibleThermostatId);
             Console.WriteLine("ThermostatId: " + thermostatId);
-            var thermostatPort = 3000 + thermostatId;
+            var thermostatPort = 50000 + thermostatId;
             Console.WriteLine("ThermostatPort:" + thermostatPort);
 
-            //change hardcoded url
-            var thermostatUrl = $"https://192.168.2.102:32784/updateTemperature?temperature={newTemperature}";
+            //change hardcoded url url that fits containers
+            var thermostatUrl = $"https://localhost:{thermostatPort}/updateTemperature?temperature={newTemperature}";
 
             var thermostatDbService = new DatabaseThermostatService();
-            var DbResult = thermostatDbService.SetThermostatTemperature(thermostatId, newTemperature);
+            var DbResult = thermostatDbService.SetThermostatTemperatureInDB(thermostatId, newTemperature);
 
-            var ThermostatResult = UpdateThermostatIdFromThermostat(thermostatUrl);
+            var ThermostatResult = UpdateThermostatTemperatureDirectlyAtThermostat(thermostatUrl);
             
             if( DbResult && ThermostatResult.Result)
             {
@@ -68,7 +68,7 @@ namespace WebServicesBackend.Services
 
 
 
-        static async Task<bool> UpdateThermostatIdFromThermostat(string apiUrl)
+        static async Task<bool> UpdateThermostatTemperatureDirectlyAtThermostat(string apiUrl)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };

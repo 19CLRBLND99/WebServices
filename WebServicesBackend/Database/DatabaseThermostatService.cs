@@ -103,7 +103,7 @@ namespace WebServicesBackend.Database
         
 
 
-        public bool SetThermostatTemperature(int thermostatId, double newTemperature)
+        public bool SetThermostatTemperatureInDB(int thermostatId, double newTemperature)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             bool result = false;
