@@ -8,7 +8,7 @@ namespace WebServicesBackend.HelperFunctions
         {
             var databaseThermostatService = new DatabaseThermostatService();
             var allThermostatIds = databaseThermostatService.GetAllThermostatIds();
-            if (!allThermostatIds.Any())
+            if (allThermostatIds.Count() == 0)
             {
                 int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allThermostatIds)
@@ -25,7 +25,7 @@ namespace WebServicesBackend.HelperFunctions
             var databaseRoomService = new DatabaseRoomService();
             var allRoomIds = databaseRoomService.GetAllRoomIds();
 
-            if (!allRoomIds.Any())
+            if (allRoomIds.Count() == 0)
             {
                 int? firstAvailable = Enumerable.Range(1, int.MaxValue)
                                 .Except(allRoomIds)

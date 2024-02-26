@@ -241,7 +241,7 @@ namespace WebServicesBackend.Database
             return rooms;
         }
 
-        public List<int>? GetAllRoomIds()
+        public List<int> GetAllRoomIds()
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
             List<int> roomIds = new List<int>();
@@ -268,7 +268,7 @@ namespace WebServicesBackend.Database
             catch (MySqlException ex)
             {
                 Console.WriteLine($"Error while connecting to DB: {ex.Message}");
-                return null;
+                return new List<int>();
             }
 
             return roomIds;
