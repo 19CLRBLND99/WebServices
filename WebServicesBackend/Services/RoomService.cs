@@ -14,9 +14,9 @@ namespace WebServicesBackend.Services
         public Tuple<bool, int?> AddRoom(string roomName)
         {
             var roomId = HelperFunctionsClass.GetNextFreeRoomId();
-            if (roomId >= 25)
+            if (roomId > 25)
             {
-                return new Tuple<bool, int?>( false, null);
+                return new Tuple<bool, int?>(false, null);
             }
 
             var roomDbService = new DatabaseRoomService();
@@ -60,7 +60,7 @@ namespace WebServicesBackend.Services
         /// <returns>a boolean which inidactes whether the assigning process was successfull or not </returns>
         public bool AssignThermostatToRoom(int roomId, int thermostatId)
         {
-            if(roomId>=25 || thermostatId >= 25)
+            if (roomId > 25 || thermostatId > 25)
             {
                 return false;
             }
