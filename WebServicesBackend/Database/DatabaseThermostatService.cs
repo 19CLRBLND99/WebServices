@@ -100,8 +100,6 @@ namespace WebServicesBackend.Database
             return thermostatIds;
         }
 
-        
-
 
         public bool SetThermostatTemperatureInDB(int thermostatId, double newTemperature)
         {

@@ -38,6 +38,19 @@ namespace WebServicesBackend.Controllers
             }
             return BadRequest();
         }
-        
+
+        [Route("/GetAllFreeThermostatIds")]
+        [HttpGet]
+        public IActionResult GetAllFreeThermostatIds()
+        {
+            var thermostatService = new ThermostatService();
+            var result = thermostatService.GetAllFreeThermostatIds();
+            if (result.Count() > 0)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
     }
 }

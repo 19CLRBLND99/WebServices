@@ -99,6 +99,28 @@ namespace WebServicesBackend.Services
                 }
             }
         }
+
+
+        
+        public List<int> GetAllFreeThermostatIds()
+        {
+            var thermostatDbService = new DatabaseThermostatService();
+            var roomsDbService = new DatabaseRoomService();
+            
+            var allThermostatIds = thermostatDbService.GetAllThermostatIds();
+            var res = roomsDbService.GetAllAssignedThermostatIds();
+            var allFreeThermostatIds = new List<int>();
+
+            foreach ( var id in allThermostatIds)
+            {
+                if (!res.Contains(id))
+                {
+                    allFreeThermostatIds.Add(id);
+                }
+            }
+            return allFreeThermostatIds;
+        }
+
     }
 
 }
