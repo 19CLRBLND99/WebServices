@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nbahr\\source\\repos\\ThermostatBackend\\ThermostatBackend.csproj": {}
+    "C:\\Users\\prattel\\source\\repos\\WebServices\\WebServicesThermostatBackend\\ThermostatBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nbahr\\source\\repos\\ThermostatBackend\\ThermostatBackend.csproj": {
+    "C:\\Users\\prattel\\source\\repos\\WebServices\\WebServicesThermostatBackend\\ThermostatBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nbahr\\source\\repos\\ThermostatBackend\\ThermostatBackend.csproj",
+        "projectUniqueName": "C:\\Users\\prattel\\source\\repos\\WebServices\\WebServicesThermostatBackend\\ThermostatBackend.csproj",
         "projectName": "ThermostatBackend",
-        "projectPath": "C:\\Users\\nbahr\\source\\repos\\ThermostatBackend\\ThermostatBackend.csproj",
-        "packagesPath": "C:\\Users\\nbahr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nbahr\\source\\repos\\ThermostatBackend\\obj\\",
+        "projectPath": "C:\\Users\\prattel\\source\\repos\\WebServices\\WebServicesThermostatBackend\\ThermostatBackend.csproj",
+        "packagesPath": "C:\\Users\\prattel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\prattel\\source\\repos\\WebServices\\WebServicesThermostatBackend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\nbahr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\prattel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

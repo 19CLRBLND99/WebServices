@@ -50,7 +50,8 @@ namespace WebServicesBackend.Services
             Console.WriteLine("ThermostatPort:" + thermostatPort);
 
             //change hardcoded url url that fits containers
-            var thermostatUrl = $"https://localhost:{thermostatPort}/updateTemperature?temperature={newTemperature}";
+            var thermostatUrl = $"https://localhost:50001/updateTemperature?temperature=14";
+            Console.WriteLine("ThermostatURL: "+thermostatUrl);
 
             var thermostatDbService = new DatabaseThermostatService();
             var DbResult = thermostatDbService.SetThermostatTemperatureInDB(thermostatId, newTemperature);
