@@ -16,55 +16,82 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 export class AppComponent implements OnInit {
   title = 'WebServicesFrontend';
   httpClient = inject(HttpClient);
-  rooms:any = [];
-  fetchAllRooms():void{
-      this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data:any)=>{
-        this.rooms = data;
-        console.log(this.rooms);
-      });
+  rooms: any = [];
+  fetchAllRooms(): void {
+    this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data: any) => {
+      this.rooms = data;
+      console.log(this.rooms);
+    });
   }
 
-  openAddWindow(){
+  openAddWindow() {
     console.log("test");
     var body = document.body;
-    
+
     // Erstelle ein neues Textfeld
     var textfeld = document.createElement("input");
     textfeld.type = "text";
-    textfeld.id = "nameField";
-    
+    textfeld.placeholder = "Raumname(Pflicht)";
+
+    var idTextArea = document.createElement("input");
+    idTextArea.type = "text";
+    idTextArea.placeholder = "Thermostat Id(Optional)";
+
+
     // Erstelle einen neuen Button
     var button = document.createElement("button");
     button.innerHTML = "Hinzufügen!";
+    button.disabled = true;
     button.addEventListener('click', () => {
-      this.addRoom(textfeld.value);
+      this.addRoom(textfeld.value, idTextArea.value);
     });
-    
+    textfeld.addEventListener("input", function () {
+      button.disabled = !textfeld.value;
+    });
+    idTextArea.onkeyup = event => { this.checkForFreeId(idTextArea.value, button, textfeld.value) };
+    textfeld.onkeyup = event => { this.checkForFreeId(idTextArea.value, button, textfeld.value) };
     // Füge das Textfeld und den Button dem Body des Dokuments hinzu
     body.appendChild(textfeld);
+    body.appendChild(idTextArea);
     body.appendChild(button);
-    // [].forEach.call(document.querySelectorAll('main'),
-    // function (e) {
-      
-    //     e.innerHTML = e.innerHTML +//the user fills the fields, which then will be used by the php code
-    //         "<div class='addWindow'><div class='addForm'>"+
-    //         "Name<br><input class='textFieldAddW' type='text' name='topicName' id='nameField' required><br>" +
-    //         //confirms the action
-    //         "<button name='Add' (click)=addRoom()>Add Topic</button>" +
-    //         //cancels the action
-    //         "<button class='cancelBtt' type='submit' name='close' onclick='closeWindow(\"topicNameField\")'>Cancel</button></div></div>";
-    // });
-}
-addRoom(name):void{
-    this.httpClient.post<any>("https://localhost:32770/AddRoom?roomName="+name,null).subscribe(response => {
-      console.log(response); // Hier erhältst du die Antwort von der API
-      // Füge hier die Logik hinzu, die du nach dem Hinzufügen des Raums ausführen möchtest
+  }
+  addRoom(name, id): void {
+    let newRoomId;
+    this.httpClient.post<number>("https://localhost:32770/AddRoom?roomName=" + name, null).subscribe((response: number) => {
+      newRoomId = response;
+      this.httpClient.post<any>("https://localhost:32770/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
+        console.log(response); // Hier erhältst du die Antwort von der API
+      });
     });
-    console.log(name);
-}
+  }
 
-  ngOnInit():void{
+  checkForFreeId(givenId, button, textarea) {
+    var taken = false;
+
+    if (givenId != "") {
+      if (textarea != "") {
+        this.httpClient.get("https://localhost:32770/CheckThermostatId?thermostatId=" + givenId).subscribe((data: TupleResponse) => {
+          console.log(data);
+          taken = data.item1.valueOf();
+          if (data.item2 != null) {
+            var listItems = data.item2.join(",");
+            console.log("Thermostat id is already taken! Unused Thermostats: " + listItems);
+          }
+          button.disabled = !taken;
+        });
+      } else {
+        button.disabled = true;
+      }
+    }
+  }
+
+  ngOnInit(): void {
     this.fetchAllRooms();
   }
 
+}
+
+export interface TupleResponse {
+  item1: boolean;
+  item2: any[]; // Hier kannst du den Datentyp der Liste spezifizieren, den deine API zurückgibt
 }
