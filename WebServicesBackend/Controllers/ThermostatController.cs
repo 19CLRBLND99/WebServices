@@ -52,5 +52,14 @@ namespace WebServicesBackend.Controllers
             return BadRequest();
         }
 
+        [Route("/CheckThermostatId")]
+        [HttpGet]
+        public IActionResult CheckThermostatId(int thermostatId)
+        {
+            var thermostatService = new ThermostatService();
+            var result = thermostatService.CheckThermostatId(thermostatId);
+            return Ok(result);
+        }
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using WebServicesBackend.Database;
+﻿using WebServicesBackend.Database;
 using WebServicesBackend.HelperFunctions;
 
 namespace WebServicesBackend.Services
@@ -17,7 +16,7 @@ namespace WebServicesBackend.Services
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.AddThermostat(newId);
 
-            return (result.Item1) ? result : new Tuple<bool, int?>(false,null);
+            return (result.Item1) ? result : new Tuple<bool, int?>(false, null);
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace WebServicesBackend.Services
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.DeleteThermostat(thermostatId);
 
-            return (result) ? true : false; 
+            return (result) ? true : false;
         }
 
         public bool SetThermostatTemperature(int? possibleThermostatId, double newTemperature)
@@ -51,8 +50,8 @@ namespace WebServicesBackend.Services
             var DbResult = thermostatDbService.SetThermostatTemperatureInDB(thermostatId, newTemperature);
 
             var ThermostatResult = UpdateThermostatTemperatureDirectlyAtThermostat(thermostatUrl);
-            
-            if( DbResult && ThermostatResult.Result)
+
+            if (DbResult && ThermostatResult.Result)
             {
                 return true;
             }
@@ -101,17 +100,17 @@ namespace WebServicesBackend.Services
         }
 
 
-        
+
         public List<int> GetAllFreeThermostatIds()
         {
             var thermostatDbService = new DatabaseThermostatService();
             var roomsDbService = new DatabaseRoomService();
-            
+
             var allThermostatIds = thermostatDbService.GetAllThermostatIds();
             var res = roomsDbService.GetAllAssignedThermostatIds();
             var allFreeThermostatIds = new List<int>();
 
-            foreach ( var id in allThermostatIds)
+            foreach (var id in allThermostatIds)
             {
                 if (!res.Contains(id))
                 {
@@ -119,6 +118,24 @@ namespace WebServicesBackend.Services
                 }
             }
             return allFreeThermostatIds;
+        }
+
+
+        public Tuple<bool, List<int>?> CheckThermostatId(int thermostatId)
+        {
+            var thermostatDbService = new DatabaseThermostatService();
+            var roomsDbService = new DatabaseRoomService();
+
+            var assignedIds = roomsDbService.GetAllAssignedThermostatIds();
+
+            foreach (var id in assignedIds) 
+            { 
+                if (id == thermostatId)
+                {
+                    return new Tuple<bool, List<int>?>(false, GetAllFreeThermostatIds());
+                }
+            }
+            return new Tuple<bool,List<int>?>(true,null);
         }
 
     }
