@@ -32,6 +32,12 @@ namespace WebServicesBackend.Services
             return (result) ? true : false;
         }
 
+        /// <summary>
+        /// Method for setting the Thermostat Temperature. Method will save the new temperature in the respective room entry and also send a update request to the thermostat container
+        /// </summary>
+        /// <param name="possibleThermostatId">the thermostatid </param>
+        /// <param name="newTemperature">the temperature to be set</param>
+        /// <returns>a bool whether the update was successfull or not</returns>
         public bool SetThermostatTemperature(int? possibleThermostatId, double newTemperature)
         {
             if (possibleThermostatId == null)
@@ -58,6 +64,10 @@ namespace WebServicesBackend.Services
             return false;
         }
 
+        /// <summary>
+        /// a Method for getting all the thermostatIds from the Database
+        /// </summary>
+        /// <returns>a possibly empty list of integers </returns>
         public List<int> GetAllThermostatIds()
         {
             var thermostatDbService = new DatabaseThermostatService();
@@ -66,7 +76,11 @@ namespace WebServicesBackend.Services
         }
 
 
-
+        /// <summary>
+        /// A Mathod that is used by the SetThermostatTemperature method to actually make a call to the thermostat container 
+        /// </summary>
+        /// <param name="apiUrl">the url of the container to call to</param>
+        /// <returns>a bool whether the update process was successfull or not </returns>
         static async Task<bool> UpdateThermostatTemperatureDirectlyAtThermostat(string apiUrl)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
@@ -99,8 +113,10 @@ namespace WebServicesBackend.Services
             }
         }
 
-
-
+        /// <summary>
+        /// a Method for getting all the thermostat ids that have not been assigned yet 
+        /// </summary>
+        /// <returns>a possibly empty list of integers</returns>
         public List<int> GetAllFreeThermostatIds()
         {
             var thermostatDbService = new DatabaseThermostatService();
@@ -120,7 +136,11 @@ namespace WebServicesBackend.Services
             return allFreeThermostatIds;
         }
 
-
+        /// <summary>
+        /// a Method that is used to check whether a thermostatid is assignable or not and if not it returns a list of assignable ids 
+        /// </summary>
+        /// <param name="thermostatId">the thermostatid to check</param>
+        /// <returns>a tuple of a bool whether the check was successfull or not and if the bool is false it returns a list of integers as well</returns>
         public Tuple<bool, List<int>?> CheckThermostatId(int thermostatId)
         {
             var thermostatDbService = new DatabaseThermostatService();
