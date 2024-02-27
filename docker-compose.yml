@@ -36,7 +36,7 @@ services:
     image: thermostatcustom
     container_name: thermostat-1
     ports:
-      - "50001:8081"
+      - "50001:8080"
     networks:
       - db_network
 
@@ -44,7 +44,192 @@ services:
     image: thermostatcustom
     container_name: thermostat-2
     ports:
-      - "50002:8081"
+      - "50002:8080"
+    networks:
+      - db_network
+
+
+  thermostat-3:
+    image: thermostatcustom
+    container_name: thermostat-3
+    ports:
+      - "50003:8080"
+    networks:
+      - db_network
+
+  thermostat-4:
+    image: thermostatcustom
+    container_name: thermostat-4
+    ports:
+      - "50004:8080"
+    networks:
+      - db_network
+
+  thermostat-5:
+    image: thermostatcustom
+    container_name: thermostat-5
+    ports:
+      - "50005:8080"
+    networks:
+      - db_network
+
+  thermostat-6:
+    image: thermostatcustom
+    container_name: thermostat-6
+    ports:
+      - "50006:8080"
+    networks:
+      - db_network
+
+  thermostat-7:
+    image: thermostatcustom
+    container_name: thermostat-7
+    ports:
+      - "50007:8080"
+    networks:
+      - db_network
+
+  thermostat-8:
+    image: thermostatcustom
+    container_name: thermostat-8
+    ports:
+      - "50008:8080"
+    networks:
+      - db_network
+
+  thermostat-9:
+    image: thermostatcustom
+    container_name: thermostat-9
+    ports:
+      - "50009:8080"
+    networks:
+      - db_network
+
+  thermostat-10:
+    image: thermostatcustom
+    container_name: thermostat-10
+    ports:
+      - "50010:8080"
+    networks:
+      - db_network
+
+  thermostat-11:
+    image: thermostatcustom
+    container_name: thermostat-11
+    ports:
+      - "50011:8080"
+    networks:
+      - db_network
+
+  thermostat-12:
+    image: thermostatcustom
+    container_name: thermostat-12
+    ports:
+      - "50012:8080"
+    networks:
+      - db_network
+
+  thermostat-13:
+    image: thermostatcustom
+    container_name: thermostat-13
+    ports:
+      - "50013:8080"
+    networks:
+      - db_network
+
+  thermostat-14:
+    image: thermostatcustom
+    container_name: thermostat-14
+    ports:
+      - "50014:8080"
+    networks:
+      - db_network
+
+  thermostat-15:
+    image: thermostatcustom
+    container_name: thermostat-15
+    ports:
+      - "50015:8080"
+    networks:
+      - db_network
+
+  thermostat-16:
+    image: thermostatcustom
+    container_name: thermostat-16
+    ports:
+      - "50016:8080"
+    networks:
+      - db_network
+
+  thermostat-17:
+    image: thermostatcustom
+    container_name: thermostat-17
+    ports:
+      - "50017:8080"
+    networks:
+      - db_network
+
+  thermostat-18:
+    image: thermostatcustom
+    container_name: thermostat-18
+    ports:
+      - "50018:8080"
+    networks:
+      - db_network
+
+  thermostat-19:
+    image: thermostatcustom
+    container_name: thermostat-19
+    ports:
+      - "50019:8080"
+    networks:
+      - db_network
+
+  thermostat-20:
+    image: thermostatcustom
+    container_name: thermostat-20
+    ports:
+      - "50020:8080"
+    networks:
+      - db_network
+
+  thermostat-21:
+    image: thermostatcustom
+    container_name: thermostat-21
+    ports:
+      - "50021:8080"
+    networks:
+      - db_network
+
+  thermostat-22:
+    image: thermostatcustom
+    container_name: thermostat-22
+    ports:
+      - "50022:8080"
+    networks:
+      - db_network
+
+  thermostat-23:
+    image: thermostatcustom
+    container_name: thermostat-23
+    ports:
+      - "50023:8080"
+    networks:
+      - db_network
+
+  thermostat-24:
+    image: thermostatcustom
+    container_name: thermostat-24
+    ports:
+      - "50024:8080"
+    networks:
+      - db_network
+
+  thermostat-25:
+    image: thermostatcustom
+    container_name: thermostat-25
+    ports:
+      - "50025:8080"
     networks:
       - db_network
 
