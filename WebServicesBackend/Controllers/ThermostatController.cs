@@ -37,6 +37,10 @@ namespace WebServicesBackend.Controllers
         [HttpDelete]
         public IActionResult DeleteThermostat(int thermostatId)
         {
+            if (int.IsNegative(thermostatId)) 
+            { 
+                return BadRequest();
+            }
             var thermostatService = new ThermostatService();
             var result = thermostatService.DeleteThermostat(thermostatId);
             return (result) ? Ok() : BadRequest();
@@ -107,6 +111,10 @@ namespace WebServicesBackend.Controllers
         [HttpGet]
         public IActionResult CheckThermostatId(int thermostatId)
         {
+            if (int.IsNegative(thermostatId))
+            {
+                return BadRequest();
+            }
             var thermostatService = new ThermostatService();
             var result = thermostatService.CheckThermostatId(thermostatId);
             return Ok(result);

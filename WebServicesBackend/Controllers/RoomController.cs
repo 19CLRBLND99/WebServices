@@ -19,6 +19,10 @@ namespace WebServicesBackend.Controllers
         [HttpPost]
         public IActionResult AddRoom(string roomName)
         {
+            if (string.IsNullOrWhiteSpace(roomName))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.AddRoom(roomName);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
@@ -36,6 +40,10 @@ namespace WebServicesBackend.Controllers
         [HttpDelete]
         public IActionResult DeleteRoom(int roomId)
         {
+            if (int.IsNegative(roomId))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.DeleteRoom(roomId);
             return (result) ? Ok() : BadRequest();
@@ -54,6 +62,10 @@ namespace WebServicesBackend.Controllers
         [HttpPost]
         public IActionResult UpdateRoomName(int roomId, string newRoomName)
         {
+            if (int.IsNegative(roomId) || string.IsNullOrEmpty(newRoomName))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.UpdateRoomName(roomId, newRoomName);
             return (result.Item1) ? Ok(result.Item2) : BadRequest();
@@ -72,6 +84,10 @@ namespace WebServicesBackend.Controllers
         [HttpPost]
         public IActionResult UpdateRoomTemperature(int roomId, double newTemperature)
         {
+            if(int.IsNegative(roomId) || double.IsNegative(newTemperature))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.UpdateRoomTemperature(roomId, newTemperature);
             return (result) ? Ok(newTemperature) : BadRequest();
@@ -90,6 +106,10 @@ namespace WebServicesBackend.Controllers
         [HttpPost]
         public IActionResult AssignThermostatToRoom(int roomId, int thermostatId)
         {
+            if (int.IsNegative(roomId) || int.IsNegative(thermostatId))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.AssignThermostatToRoom(roomId, thermostatId);
             return (result) ? Ok() : BadRequest();
@@ -107,6 +127,10 @@ namespace WebServicesBackend.Controllers
         [HttpGet]
         public IActionResult GetRoomByRoomId(int roomId)
         {
+            if (int.IsNegative(roomId))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.GetRoomById(roomId);
             return (result != null) ? Ok(result) : BadRequest();
@@ -124,6 +148,10 @@ namespace WebServicesBackend.Controllers
         [HttpGet]
         public IActionResult GetRoomWithThermostatByRoomId(int roomId)
         {
+            if (int.IsNegative(roomId))
+            {
+                return BadRequest();
+            }
             var roomService = new RoomService();
             var result = roomService.GetRoomWithThermostatByRoomId(roomId);
             return (result != null) ? Ok(result) : BadRequest();

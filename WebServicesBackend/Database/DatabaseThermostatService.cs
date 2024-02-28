@@ -87,7 +87,7 @@ namespace WebServicesBackend.Database
                 {
                     while (reader.Read())
                     {
-                        thermostatIds.Add(reader.GetInt32(0));
+                        thermostatIds.Add(HelperFunctionsClass.SafeGetInt(reader, 0));
                     }
                 }
                 connection.Close();
@@ -101,7 +101,6 @@ namespace WebServicesBackend.Database
 
             return thermostatIds;
         }
-
 
         public bool SetThermostatTemperatureInDB(int thermostatId, double newTemperature)
         {
@@ -133,10 +132,10 @@ namespace WebServicesBackend.Database
             return result;
         }
 
-        public ThermostatModel? GetThermostatById(int thermostatId) 
+        public ThermostatModel? GetThermostatById(int thermostatId)
         {
             MySqlConnection connection = new MySqlConnection(connectionString);
-           ThermostatModel thermostat = new ThermostatModel();
+            ThermostatModel thermostat = new ThermostatModel();
 
             try
             {
@@ -151,8 +150,8 @@ namespace WebServicesBackend.Database
                 {
                     while (reader.Read())
                     {
-                        thermostat.ThermostatId = (reader.GetInt32(0));
-                        thermostat.Temperature = HelperFunctionsClass.SafeGetDouble(reader,1);
+                        thermostat.ThermostatId = HelperFunctionsClass.SafeGetInt(reader, 0);
+                        thermostat.Temperature = HelperFunctionsClass.SafeGetDouble(reader, 1);
                     }
                 }
                 connection.Close();

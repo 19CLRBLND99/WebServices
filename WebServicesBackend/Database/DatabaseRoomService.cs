@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using WebServicesBackend.HelperFunctions;
 using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Database
@@ -148,7 +149,7 @@ namespace WebServicesBackend.Database
                     MySqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        thermostatId = reader.GetInt32(0);
+                        thermostatId = HelperFunctionsClass.SafeGetInt(reader, 0);
                     }
                 }
                 connection.Close();
@@ -181,8 +182,8 @@ namespace WebServicesBackend.Database
                 {
                     room = new RoomModel
                     {
-                        RoomId = Convert.ToInt32(reader["id"]),
-                        RoomName = Convert.ToString(reader["name"]),
+                        RoomId = HelperFunctionsClass.SafeGetInt(reader, 0),
+                        RoomName = HelperFunctionsClass.SafeGetString(reader, 1),
                     };
                     if (!reader.IsDBNull(2))
                     {
@@ -218,8 +219,8 @@ namespace WebServicesBackend.Database
                 {
                     RoomModel room = new RoomModel
                     {
-                        RoomId = Convert.ToInt32(reader["id"]),
-                        RoomName = Convert.ToString(reader["name"]),
+                        RoomId = HelperFunctionsClass.SafeGetInt(reader, 0),
+                        RoomName = HelperFunctionsClass.SafeGetString(reader, 1),
                     };
                     if (!reader.IsDBNull(2))
                     {
@@ -256,7 +257,7 @@ namespace WebServicesBackend.Database
                 {
                     while (reader.Read())
                     {
-                        roomIds.Add(reader.GetInt32(0));
+                        roomIds.Add(HelperFunctionsClass.SafeGetInt(reader, 0));
                     }
                 }
                 connection.Close();
@@ -270,7 +271,6 @@ namespace WebServicesBackend.Database
 
             return roomIds;
         }
-
 
         public List<int> GetAllAssignedThermostatIds()
         {
@@ -290,7 +290,7 @@ namespace WebServicesBackend.Database
                 {
                     while (reader.Read())
                     {
-                        thermostatIds.Add(reader.GetInt32(0));
+                        thermostatIds.Add(HelperFunctionsClass.SafeGetInt(reader, 0));
                     }
                 }
                 connection.Close();
