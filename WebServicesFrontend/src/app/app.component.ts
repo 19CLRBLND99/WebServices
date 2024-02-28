@@ -5,6 +5,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PopupService } from './popup/popup.service';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +20,26 @@ export class AppComponent implements OnInit {
   rooms: any = [];
   thermostats: any = [];
   temperature: any = [];
-  roomId: any = [];
+  roomsWithTemperature: any = [];
+  constructor(private popupService: PopupService) {}
+
+  openPopup() {
+    this.popupService.openPopup();
+  }
 
   getAllRooms(): void {
     this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
       console.log(this.rooms);
+      this.getTemperaturesForRooms();
+    });
+  }
+
+  getTemperaturesForRooms(): void {
+    this.rooms.forEach((room) => {
+      this.httpClient.get(`https://localhost:32770/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
+        room.temperature = temperatureData.thermostat.temperature;
+      });
     });
   }
 
@@ -36,14 +51,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  changeTemperature(roomId: number, temperature: number): void {
-    const body = {
-      roomId: roomId,
-      temperature: temperature
-    };
- 
-    this.httpClient.post<any>('https://localhost:32770/UpdateRoomTemperature', body).subscribe((data: any)=>{
-      this.temperature = data;
+  changeTemperature(roomId: number, newTemperature: number): void {
+
+    this.httpClient.post<any>(`https://localhost:32770/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
+      console.log('Temperature changed successfully');
+      // Optional: Aktualisieren Sie die Liste der Räume, um die aktualisierten Daten anzuzeigen
+      this.getAllRooms();
+    }, (error) => {
+      console.error('Error while changing temperature:', error);
     });
   }
 
@@ -78,34 +93,16 @@ export class AppComponent implements OnInit {
     body.appendChild(button);
   }
 
-  openChangeTemperatureWindow() {
-    var body = document.body;
-
-    var raumIdField = document.createElement("input");
-    raumIdField.type = "number";
-    raumIdField.placeholder = "RaumId";
-
-    var temperatureField = document.createElement("input");
-    temperatureField.type = "number";
-    temperatureField.placeholder = "Temperatur";
-
-
-    var button = document.createElement("button");
-    button.innerHTML = "Ändern!";
-    button.disabled = true;
-    button.addEventListener('click', () => {
-      this.changeTemperature(raumIdField.valueAsNumber, temperatureField.valueAsNumber);
-    });
-    raumIdField.addEventListener("input", function () {
-      button.disabled = !raumIdField.valueAsNumber;
-    });
-    temperatureField.addEventListener("input", function () {
-      button.disabled = !temperatureField.valueAsNumber;
-    });
-
-    body.appendChild(raumIdField);
-    body.appendChild(temperatureField);
-    body.appendChild(button);
+  openChangeTemperatureWindow(roomId: number) {
+    const newTemperature = prompt('Geben Sie die neue Temperatur ein:');
+    if (newTemperature !== null) {
+      const parsedTemperature = parseFloat(newTemperature);
+      if (!isNaN(parsedTemperature)) {
+        this.changeTemperature(roomId, parsedTemperature);
+      } else {
+        alert('Ungültige Eingabe! Bitte geben Sie eine numerische Temperatur ein.');
+      }
+    }
   }
 
   addRoom(name, id): void {

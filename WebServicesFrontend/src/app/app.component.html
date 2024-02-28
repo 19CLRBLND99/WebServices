@@ -15,7 +15,9 @@
             <div class="grid-item">
                 <div class="box">
                     {{room.roomName}}
-                    <button (click)="openChangeTemperatureWindow()">
+                    <br>
+                    {{room.temperature}}
+                    <button (click)="openChangeTemperatureWindow(room.roomId)">
                         Temperatur anpassen
                     </button>
                 </div>
