@@ -3,3 +3,5 @@ CREATE TABLE rooms (
     name VARCHAR(100),
     thermostatID INT
 );
+
+ INSERT INTO rooms VALUES(1,"Initial Room",1)

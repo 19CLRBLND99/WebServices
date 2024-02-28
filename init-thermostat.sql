@@ -3,3 +3,28 @@ CREATE TABLE thermostat (
     temperature DOUBLE
 );
 
+INSERT INTO thermostat VALUES(1,19.5);
+INSERT INTO thermostat VALUES(2,19.5);
+INSERT INTO thermostat VALUES(3,19.5);
+INSERT INTO thermostat VALUES(4,19.5);
+INSERT INTO thermostat VALUES(5,19.5);
+INSERT INTO thermostat VALUES(6,19.5);
+INSERT INTO thermostat VALUES(7,19.5);
+INSERT INTO thermostat VALUES(8,19.5);
+INSERT INTO thermostat VALUES(9,19.5);
+INSERT INTO thermostat VALUES(10,19.5);
+INSERT INTO thermostat VALUES(11,19.5);
+INSERT INTO thermostat VALUES(12,19.5);
+INSERT INTO thermostat VALUES(13,19.5);
+INSERT INTO thermostat VALUES(14,19.5);
+INSERT INTO thermostat VALUES(15,19.5);
+INSERT INTO thermostat VALUES(16,19.5);
+INSERT INTO thermostat VALUES(17,19.5);
+INSERT INTO thermostat VALUES(18,19.5);
+INSERT INTO thermostat VALUES(19,19.5);
+INSERT INTO thermostat VALUES(20,19.5);
+INSERT INTO thermostat VALUES(21,19.5);
+INSERT INTO thermostat VALUES(22,19.5);
+INSERT INTO thermostat VALUES(23,19.5);
+INSERT INTO thermostat VALUES(24,19.5);
+INSERT INTO thermostat VALUES(25,19.5);
