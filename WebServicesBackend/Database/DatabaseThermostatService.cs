@@ -1,4 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
+using WebServicesBackend.HelperFunctions;
+using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Database
 {
@@ -111,7 +113,7 @@ namespace WebServicesBackend.Database
                 connection.Open();
                 Console.WriteLine("Successfully connected to DB");
 
-                string sqlStatement = $"UPDATE thermostat SET temperature = \"{newTemperature}\" WHERE id = {thermostatId};";
+                string sqlStatement = $"UPDATE thermostat SET temperature = '{newTemperature}' WHERE id = {thermostatId};";
 
                 using (MySqlCommand command = new MySqlCommand(sqlStatement, connection))
                 {
@@ -128,7 +130,41 @@ namespace WebServicesBackend.Database
                 return false;
             }
 
-            return true;
+            return result;
+        }
+
+        public ThermostatModel? GetThermostatById(int thermostatId) 
+        {
+            MySqlConnection connection = new MySqlConnection(connectionString);
+           ThermostatModel thermostat = new ThermostatModel();
+
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Successfully connected to DB");
+
+                string sqlStatement = $"SELECT * FROM thermostat WHERE id = {thermostatId}";
+
+                MySqlCommand command = new MySqlCommand(sqlStatement, connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        thermostat.ThermostatId = (reader.GetInt32(0));
+                        thermostat.Temperature = HelperFunctionsClass.SafeGetDouble(reader,1);
+                    }
+                }
+                connection.Close();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error while connecting to DB: {ex.Message}");
+                return null;
+            }
+
+            return thermostat;
         }
     }
 }

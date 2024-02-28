@@ -112,6 +112,15 @@ namespace WebServicesBackend.Controllers
             return (result != null) ? Ok(result) : BadRequest();
         }
 
+        [Route("/GetRoomWithThermostatByRoomId")]
+        [HttpGet]
+        public IActionResult GetRoomWithThermostatByRoomId(int roomId)
+        {
+            var roomService = new RoomService();
+            var result = roomService.GetRoomWithThermostatByRoomId(roomId);
+            return (result != null) ? Ok(result) : BadRequest();
+        }
+
         /// <summary>
         /// Controller endpoint for getting all available rooms 
         /// </summary>

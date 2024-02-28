@@ -1,4 +1,5 @@
-﻿using WebServicesBackend.Database;
+﻿using MySql.Data.MySqlClient;
+using WebServicesBackend.Database;
 
 namespace WebServicesBackend.HelperFunctions
 {
@@ -27,7 +28,27 @@ namespace WebServicesBackend.HelperFunctions
                                 .FirstOrDefault();
 
                 return firstAvailable;
-            
+        }
+
+        public static string? SafeGetString(MySqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetString(colIndex);
+            return null;
+        }
+
+        public static int? SafeGetInt(MySqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetInt32(colIndex);
+            return null;
+        }
+
+        public static double? SafeGetDouble(MySqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetDouble(colIndex);
+            return null;
         }
     }
 }

@@ -117,6 +117,33 @@ namespace WebServicesBackend.Services
         }
 
         /// <summary>
+        /// method which is used for getting a room via its id
+        /// </summary>
+        /// <param name="roomId">the id of the to be returned room </param>
+        /// <returns>the roomModel</returns>
+        public RoomWithThermostatModel GetRoomWithThermostatByRoomId(int roomId)
+        {
+            var result = new RoomWithThermostatModel();
+
+            var roomDbService = new DatabaseRoomService();
+            var thermostatDbService = new DatabaseThermostatService();
+
+            var room = roomDbService.GetRoomById(roomId);
+            var thermostat = thermostatDbService.GetThermostatById(room.ThermostatId);
+
+            result.RoomName = room.RoomName;
+            result.RoomId =room.RoomId;
+            result.ThermostatId = room.ThermostatId;
+            if (thermostat != null)
+            {
+                result.Thermostat = thermostat;
+            }
+
+
+            return result;
+        }
+
+        /// <summary>
         /// method which is used for getting all rooms
         /// </summary>
         /// <returns>a list of roomModels</returns>
