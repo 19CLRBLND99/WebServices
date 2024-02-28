@@ -1,9 +1,7 @@
 ## Backend
 - YAML 
-  - backend container hinzufügen
+  - backend container hinzufügen -> Peter
 - error handling bei erstellten Methoden
-- change from get to safe get 
-
-
-## Frontend 
-- Frontend design und abrufen/darstellen der räume mit temparatur usw. 
+  - rooms -> jan 
+  - thermostat -> Peter 
+- change from get to safe get -> jan 
