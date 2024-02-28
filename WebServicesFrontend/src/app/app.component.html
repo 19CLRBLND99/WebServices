@@ -23,6 +23,12 @@
                     <button (click)="openChangeRoomNameWindow(room.roomId, room.roomName)">
                         Raumnamen ändern
                     </button>
+                    <button (click)="addThermostatAndAssignToRoom(room.roomId)">
+                        Thermostat hinzufügen
+                    </button>
+                    <button (click)="deleteRoom(room.roomId)">
+                        Raum löschen
+                    </button>
 
                 </div>
             </div>

@@ -2,11 +2,9 @@
 //The view associated with this root component becomes the root of the view 
 //hierarchy as you add components and services to your application.
 
-import { Component, EventEmitter, Inject, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { PopupService } from './popup/popup.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -144,6 +142,20 @@ export class AppComponent implements OnInit {
       }
     }
 
+  }
+
+  addThermostatAndAssignToRoom(roomId: number): void {
+    this.httpClient.post<any>('https://localhost:32770/AddThermostat', null).subscribe((thermostatId: number) => {
+      this.httpClient.post<any>(`https://localhost:32770/AssignThermostatToRoom?roomId=${roomId}&thermostatId=${thermostatId}`, null)
+        .subscribe(() => {
+          console.log(`Thermostat added and assigned to room ID ${roomId}`);
+          this.getAllRooms(); // Update the room list after adding the thermostat
+        }, (error) => {
+          console.error('Error while assigning thermostat to room:', error);
+        });
+    }, (error) => {
+      console.error('Error while adding thermostat:', error);
+    });
   }
 
   ngOnInit(): void {
