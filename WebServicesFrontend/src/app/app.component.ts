@@ -142,6 +142,10 @@ export class AppComponent implements OnInit {
       } else {
         button.disabled = true;
       }
+    }else{
+      if (textarea != ""){
+        button.disabled = false;
+      }
     }
 
   }
