@@ -78,6 +78,19 @@ namespace WebServicesBackend.Controllers
             return BadRequest();
         }
 
+        [Route("/GetAllFreeThermostats")]
+        [HttpGet]
+        public IActionResult GetAllFreeThermostats()
+        {
+            var thermostatService = new ThermostatService();
+            var result = thermostatService.GetAllFreeThermostats();
+            if (result.Count() > 0)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
         /// <summary>
         /// Controller Endpoint for checking whether a thermostatId can still be assigned or not
         /// </summary>

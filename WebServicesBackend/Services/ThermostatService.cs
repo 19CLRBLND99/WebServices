@@ -1,5 +1,6 @@
 ﻿using WebServicesBackend.Database;
 using WebServicesBackend.HelperFunctions;
+using WebServicesBackend.Models;
 
 namespace WebServicesBackend.Services
 {
@@ -12,6 +13,8 @@ namespace WebServicesBackend.Services
         public Tuple<bool, int?> AddThermostat()
         {
             var newId = HelperFunctionsClass.GetNextFreeThermostatId();
+            Console.WriteLine(newId);
+            if (newId > 25) { return new Tuple<bool, int?>(false, null); }
 
             var thermostatDbService = new DatabaseThermostatService();
             var result = thermostatDbService.AddThermostat(newId);
@@ -136,7 +139,27 @@ namespace WebServicesBackend.Services
             }
             return allFreeThermostatIds;
         }
+        
 
+
+        public List<ThermostatModel> GetAllFreeThermostats()
+        {
+            var result = new List<ThermostatModel>();
+
+            var freeThermostatIds = GetAllFreeThermostatIds();
+            var thermostatDbService = new DatabaseThermostatService();
+
+            foreach(var id in freeThermostatIds)
+            {
+                var thermostat = thermostatDbService.GetThermostatById(id);
+                if ( thermostat != null)
+                {
+                    result.Add(thermostat);
+                }
+            }
+
+            return result;
+        }
         /// <summary>
         /// a Method that is used to check whether a thermostatid is assignable or not and if not it returns a list of assignable ids 
         /// </summary>
