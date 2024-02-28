@@ -3,7 +3,7 @@
 <main class="main">
 
     <div class="header">
-        <h2 class="logo">CompanyLogo</h2>
+        <h2 class="logo">Logo</h2>
         <div class="header-right">
             <h2>SmartHome Shit</h2>
         </div>
@@ -14,9 +14,9 @@
         @for(room of rooms;track "room.roomId"){
             <div class="grid-item">
                 <div class="box">
-                    {{room.roomName}}
+                    <div class="room-name">{{room.roomName}}</div>
                     <br>
-                    {{room.temperature}}
+                    <div class="room-name">{{room.temperature}}</div>
                     <button (click)="openChangeTemperatureWindow(room.roomId)">
                         Temperatur anpassen
                     </button>
