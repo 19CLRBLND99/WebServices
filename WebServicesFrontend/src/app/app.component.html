@@ -1,17 +1,33 @@
 <!--Defines the HTML template associated with the root AppComponent.--> 
 
 <main class="main">
-    <div class="content">
-        Rooms: 
-        <table>
-            @for(room of rooms;track "room.roomId"){
-                <tr>
-                    <td>{{room.roomId}}</td>
-                    <td>{{room.roomName}}</td>
-                    <td>{{room.thermostatId}}</td>
-                </tr>
-            }
-        </table>
+
+    <div class="header">
+        <h2 class="logo">CompanyLogo</h2>
+        <div class="header-right">
+            <h2>SmartHome Shit</h2>
+        </div>
     </div>
-    <button (click)="openAddWindow()">Hinzufügen</button>
+
+    <h2>Räume: </h2>
+    <div class="grid-container">
+        @for(room of rooms;track "room.roomId"){
+            <div class="grid-item">
+                <div class="box">
+                    {{room.roomName}}
+                    <button (click)="openChangeTemperatureWindow()">
+                        Temperatur anpassen
+                    </button>
+                </div>
+            </div>
+            
+        }
+    </div>
+        
+    <div class="buttons">
+        <button (click)="openAddWindow()">
+            neuer Raum
+        </button>
+    </div>
+
 </main>

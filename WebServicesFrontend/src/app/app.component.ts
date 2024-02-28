@@ -17,15 +17,37 @@ export class AppComponent implements OnInit {
   title = 'WebServicesFrontend';
   httpClient = inject(HttpClient);
   rooms: any = [];
-  fetchAllRooms(): void {
+  thermostats: any = [];
+  temperature: any = [];
+  roomId: any = [];
+
+  getAllRooms(): void {
     this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
       console.log(this.rooms);
     });
   }
 
+  //Funktioniert nicht optimal, da nicht einzelne Items sondern eine Liste ausgegeben wird
+  getAllThermostatIds(): void {
+    this.httpClient.get('https://localhost:32770/GetAllThermostatIds').subscribe((data: any) => {
+      this.thermostats = data;
+      console.log(this.thermostats);
+    });
+  }
+
+  changeTemperature(roomId: number, temperature: number): void {
+    const body = {
+      roomId: roomId,
+      temperature: temperature
+    };
+ 
+    this.httpClient.post<any>('https://localhost:32770/UpdateRoomTemperature', body).subscribe((data: any)=>{
+      this.temperature = data;
+    });
+  }
+
   openAddWindow() {
-    console.log("test");
     var body = document.body;
 
     // Erstelle ein neues Textfeld
@@ -55,6 +77,37 @@ export class AppComponent implements OnInit {
     body.appendChild(idTextArea);
     body.appendChild(button);
   }
+
+  openChangeTemperatureWindow() {
+    var body = document.body;
+
+    var raumIdField = document.createElement("input");
+    raumIdField.type = "number";
+    raumIdField.placeholder = "RaumId";
+
+    var temperatureField = document.createElement("input");
+    temperatureField.type = "number";
+    temperatureField.placeholder = "Temperatur";
+
+
+    var button = document.createElement("button");
+    button.innerHTML = "Ändern!";
+    button.disabled = true;
+    button.addEventListener('click', () => {
+      this.changeTemperature(raumIdField.valueAsNumber, temperatureField.valueAsNumber);
+    });
+    raumIdField.addEventListener("input", function () {
+      button.disabled = !raumIdField.valueAsNumber;
+    });
+    temperatureField.addEventListener("input", function () {
+      button.disabled = !temperatureField.valueAsNumber;
+    });
+
+    body.appendChild(raumIdField);
+    body.appendChild(temperatureField);
+    body.appendChild(button);
+  }
+
   addRoom(name, id): void {
     let newRoomId;
     this.httpClient.post<number>("https://localhost:32770/AddRoom?roomName=" + name, null).subscribe((response: number) => {
@@ -86,7 +139,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchAllRooms();
+    this.getAllRooms();
+    this.getAllThermostatIds();
   }
 
 }

@@ -1,1 +1,67 @@
 /*Defines the base CSS stylesheet for the root AppComponent.*/
+
+h2 {
+    margin: 20px;
+}
+
+.content{
+    margin: 20px;
+}
+
+.box{
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom:10px;
+    text-align: center;
+}
+
+.header {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    padding: 20px 10px;
+}
+
+.header h2 {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+}
+
+.header-right {
+    float: right;
+}
+
+@media screen and (max-width: 500px) {
+    .header h2 {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .header-right {
+      float: none;
+    }
+}
+
+.grid-container {
+    display: inline-grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+
+.grid-item {
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+  }
+
+.buttons {
+    padding: 30px;
+}
+
