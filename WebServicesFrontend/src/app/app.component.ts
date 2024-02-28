@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   roomsWithTemperature: any = [];
 
   getAllRooms(): void {
-    this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data: any) => {
+    this.httpClient.get('https://localhost:32772/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
       console.log(this.rooms);
       this.getTemperaturesForRooms();
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteRoom(roomId: number): void {
-    this.httpClient.delete(`https://localhost:32770/DeleteRoom?roomId=${roomId}`).subscribe((data: any) => {
+    this.httpClient.delete(`https://localhost:32772/DeleteRoom?roomId=${roomId}`).subscribe((data: any) => {
       console.log(`Raum mit der ID ${roomId} wurde erfolgreich gelöscht.`);
       this.getAllRooms();
     });
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
 
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
-      this.httpClient.get(`https://localhost:32770/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
+      this.httpClient.get(`https://localhost:32772/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
         room.temperature = temperatureData.thermostat.temperature;
       });
     });
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
 
   changeTemperature(roomId: number, newTemperature: number): void {
 
-    this.httpClient.post<any>(`https://localhost:32770/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
+    this.httpClient.post<any>(`https://localhost:32772/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
       console.log('Temperature changed successfully');
       this.getAllRooms();
     }, (error) => {
@@ -99,21 +99,23 @@ export class AppComponent implements OnInit {
 
   addRoom(name, id): void {
     let newRoomId;
-    this.httpClient.post<number>("https://localhost:32770/AddRoom?roomName=" + name, null).subscribe((response: number) => {
+    this.httpClient.post<number>("https://localhost:32772/AddRoom?roomName=" + name, null).subscribe((response: number) => {
       newRoomId = response;
-      this.httpClient.post<any>("https://localhost:32770/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
-        console.log(response); // Hier erhältst du die Antwort von der API
-      });
+      if (id != "") {
+        this.httpClient.post<any>("https://localhost:32772/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
+          console.log(response); // Hier erhältst du die Antwort von der API
+        });
+      }
     });
   }
 
   updateRoomName(roomId: number, newName: string): void {
-    this.httpClient.post<any>(`https://localhost:32770/UpdateRoomName?roomId=${roomId}&newRoomName=${newName}`, null).subscribe(() => {
-        console.log(`Room name updated successfully for room ID ${roomId}`);
-        this.getAllRooms(); // Update the room list after the name change
-      }, (error) => {
-        console.error('Error while updating room name:', error);
-      });
+    this.httpClient.post<any>(`https://localhost:32772/UpdateRoomName?roomId=${roomId}&newRoomName=${newName}`, null).subscribe(() => {
+      console.log(`Room name updated successfully for room ID ${roomId}`);
+      this.getAllRooms(); // Update the room list after the name change
+    }, (error) => {
+      console.error('Error while updating room name:', error);
+    });
   }
 
   openChangeRoomNameWindow(roomId: number, currentName: string): void {
@@ -128,7 +130,7 @@ export class AppComponent implements OnInit {
 
     if (givenId != "") {
       if (textarea != "") {
-        this.httpClient.get("https://localhost:32770/CheckThermostatId?thermostatId=" + givenId).subscribe((data: TupleResponse) => {
+        this.httpClient.get("https://localhost:32772/CheckThermostatId?thermostatId=" + givenId).subscribe((data: TupleResponse) => {
           console.log(data);
           taken = data.item1.valueOf();
           if (data.item2 != null) {
@@ -145,8 +147,8 @@ export class AppComponent implements OnInit {
   }
 
   addThermostatAndAssignToRoom(roomId: number): void {
-    this.httpClient.post<any>('https://localhost:32770/AddThermostat', null).subscribe((thermostatId: number) => {
-      this.httpClient.post<any>(`https://localhost:32770/AssignThermostatToRoom?roomId=${roomId}&thermostatId=${thermostatId}`, null)
+    this.httpClient.post<any>('https://localhost:32772/AddThermostat', null).subscribe((thermostatId: number) => {
+      this.httpClient.post<any>(`https://localhost:32772/AssignThermostatToRoom?roomId=${roomId}&thermostatId=${thermostatId}`, null)
         .subscribe(() => {
           console.log(`Thermostat added and assigned to room ID ${roomId}`);
           this.getAllRooms(); // Update the room list after adding the thermostat
