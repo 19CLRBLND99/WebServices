@@ -2,10 +2,11 @@
 //The view associated with this root component becomes the root of the view 
 //hierarchy as you add components and services to your application.
 
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, OnInit, Output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PopupService } from './popup/popup.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -21,17 +22,19 @@ export class AppComponent implements OnInit {
   thermostats: any = [];
   temperature: any = [];
   roomsWithTemperature: any = [];
-  constructor(private popupService: PopupService) {}
-
-  openPopup() {
-    this.popupService.openPopup();
-  }
 
   getAllRooms(): void {
     this.httpClient.get('https://localhost:32770/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
       console.log(this.rooms);
       this.getTemperaturesForRooms();
+    });
+  }
+
+  deleteRoom(roomId: number): void {
+    this.httpClient.delete(`https://localhost:32770/DeleteRoom?roomId=${roomId}`).subscribe((data: any) => {
+      console.log(`Raum mit der ID ${roomId} wurde erfolgreich gelöscht.`);
+      this.getAllRooms();
     });
   }
 
@@ -43,19 +46,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  //Funktioniert nicht optimal, da nicht einzelne Items sondern eine Liste ausgegeben wird
-  getAllThermostatIds(): void {
-    this.httpClient.get('https://localhost:32770/GetAllThermostatIds').subscribe((data: any) => {
-      this.thermostats = data;
-      console.log(this.thermostats);
-    });
-  }
-
   changeTemperature(roomId: number, newTemperature: number): void {
 
     this.httpClient.post<any>(`https://localhost:32770/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
       console.log('Temperature changed successfully');
-      // Optional: Aktualisieren Sie die Liste der Räume, um die aktualisierten Daten anzuzeigen
       this.getAllRooms();
     }, (error) => {
       console.error('Error while changing temperature:', error);
@@ -115,6 +109,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  updateRoomName(roomId: number, newName: string): void {
+    this.httpClient.post<any>(`https://localhost:32770/UpdateRoomName?roomId=${roomId}&newRoomName=${newName}`, null).subscribe(() => {
+        console.log(`Room name updated successfully for room ID ${roomId}`);
+        this.getAllRooms(); // Update the room list after the name change
+      }, (error) => {
+        console.error('Error while updating room name:', error);
+      });
+  }
+
+  openChangeRoomNameWindow(roomId: number, currentName: string): void {
+    const newName = prompt(`Geben Sie den neuen Namen für Raum ${currentName} ein:`);
+    if (newName !== null) {
+      this.updateRoomName(roomId, newName);
+    }
+  }
+
   checkForFreeId(givenId, button, textarea) {
     var taken = false;
 
@@ -133,13 +143,12 @@ export class AppComponent implements OnInit {
         button.disabled = true;
       }
     }
+
   }
 
   ngOnInit(): void {
     this.getAllRooms();
-    this.getAllThermostatIds();
   }
-
 }
 
 export interface TupleResponse {
