@@ -140,8 +140,10 @@ namespace WebServicesBackend.Services
             return allFreeThermostatIds;
         }
         
-
-
+        /// <summary>
+        /// A Method for getting all free thermostat data models
+        /// </summary>
+        /// <returns>a possibly empty list of free thermostat models</returns>
         public List<ThermostatModel> GetAllFreeThermostats()
         {
             var result = new List<ThermostatModel>();

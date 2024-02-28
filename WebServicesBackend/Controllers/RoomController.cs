@@ -112,6 +112,14 @@ namespace WebServicesBackend.Controllers
             return (result != null) ? Ok(result) : BadRequest();
         }
 
+        /// <summary>
+        /// Controller endpoint for getting a single roomModel with its assigned thermostat model 
+        /// </summary>
+        /// <param name="roomId">the id of the room to get</param>
+        /// <returns>
+        /// IActionResult Ok(RoomWithThermostatModel) - successfully fetched the room and thermostat
+        /// IActionResult BadRequest() - problem while fetching room with thermostat
+        /// </returns>
         [Route("/GetRoomWithThermostatByRoomId")]
         [HttpGet]
         public IActionResult GetRoomWithThermostatByRoomId(int roomId)

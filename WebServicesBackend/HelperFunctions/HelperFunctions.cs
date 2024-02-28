@@ -15,8 +15,8 @@ namespace WebServicesBackend.HelperFunctions
                                 .FirstOrDefault();
 
                 return firstAvailable;
-            
         }
+
         public static int? GetNextFreeRoomId()
         {
             var databaseRoomService = new DatabaseRoomService();

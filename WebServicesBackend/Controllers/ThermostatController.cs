@@ -78,6 +78,10 @@ namespace WebServicesBackend.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Controller endpoint for getting all unassigned thermostat models
+        /// </summary>
+        /// <returns>returns a possibly empty list of thermostat models</returns>
         [Route("/GetAllFreeThermostats")]
         [HttpGet]
         public IActionResult GetAllFreeThermostats()
