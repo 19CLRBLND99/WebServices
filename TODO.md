@@ -1,7 +1,8 @@
 ## Backend
 - YAML 
+  - backend container hinzufügen
 - error handling bei erstellten Methoden
-- methode die alle ids vergibt für thermostate 
+- change from get to safe get 
 
 
 ## Frontend 
