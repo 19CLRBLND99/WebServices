@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
     this.httpClient.post<number>(this.baseUrl+"/AddRoom?roomName=" + name, null).subscribe((response: number) => {
       newRoomId = response;
       if (id != "") {
-        this.httpClient.post<any>("https://localhost:32772/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
+        this.httpClient.post<any>(this.baseUrl+"/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
           console.log(response); // Hier erhältst du die Antwort von der API
         });
       }
