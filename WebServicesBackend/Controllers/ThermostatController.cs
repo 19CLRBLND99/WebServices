@@ -37,6 +37,10 @@ namespace WebServicesBackend.Controllers
         [HttpDelete]
         public IActionResult DeleteThermostat(int thermostatId)
         {
+            if (int.IsNegative(thermostatId)) 
+            { 
+                return BadRequest();
+            }
             var thermostatService = new ThermostatService();
             var result = thermostatService.DeleteThermostat(thermostatId);
             return (result) ? Ok() : BadRequest();
@@ -79,6 +83,23 @@ namespace WebServicesBackend.Controllers
         }
 
         /// <summary>
+        /// Controller endpoint for getting all unassigned thermostat models
+        /// </summary>
+        /// <returns>returns a possibly empty list of thermostat models</returns>
+        [Route("/GetAllFreeThermostats")]
+        [HttpGet]
+        public IActionResult GetAllFreeThermostats()
+        {
+            var thermostatService = new ThermostatService();
+            var result = thermostatService.GetAllFreeThermostats();
+            if (result.Count() > 0)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
         /// Controller Endpoint for checking whether a thermostatId can still be assigned or not
         /// </summary>
         /// <param name="thermostatId">the thermostatId to check</param>
@@ -90,6 +111,10 @@ namespace WebServicesBackend.Controllers
         [HttpGet]
         public IActionResult CheckThermostatId(int thermostatId)
         {
+            if (int.IsNegative(thermostatId))
+            {
+                return BadRequest();
+            }
             var thermostatService = new ThermostatService();
             var result = thermostatService.CheckThermostatId(thermostatId);
             return Ok(result);

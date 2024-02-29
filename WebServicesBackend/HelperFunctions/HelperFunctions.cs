@@ -15,8 +15,8 @@ namespace WebServicesBackend.HelperFunctions
                                 .FirstOrDefault();
 
                 return firstAvailable;
-            
         }
+
         public static int? GetNextFreeRoomId()
         {
             var databaseRoomService = new DatabaseRoomService();
@@ -37,11 +37,11 @@ namespace WebServicesBackend.HelperFunctions
             return null;
         }
 
-        public static int? SafeGetInt(MySqlDataReader reader, int colIndex)
+        public static int SafeGetInt(MySqlDataReader reader, int colIndex)
         {
             if (!reader.IsDBNull(colIndex))
                 return reader.GetInt32(colIndex);
-            return null;
+            return -1;
         }
 
         public static double? SafeGetDouble(MySqlDataReader reader, int colIndex)

@@ -102,9 +102,11 @@ export class AppComponent implements OnInit {
     let newRoomId;
     this.httpClient.post<number>(this.baseUrl+"/AddRoom?roomName=" + name, null).subscribe((response: number) => {
       newRoomId = response;
-      this.httpClient.post<any>(this.baseUrl+"/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
-        console.log(response); // Hier erhältst du die Antwort von der API
-      });
+      if (id != "") {
+        this.httpClient.post<any>("https://localhost:32772/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
+          console.log(response); // Hier erhältst du die Antwort von der API
+        });
+      }
     });
   }
 
@@ -140,6 +142,10 @@ export class AppComponent implements OnInit {
         });
       } else {
         button.disabled = true;
+      }
+    }else{
+      if (textarea != ""){
+        button.disabled = false;
       }
     }
 
