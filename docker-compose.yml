@@ -28,6 +28,17 @@ services:
     networks:
       - db_network
 
+
+  backend:
+    build:
+      context: ./WebServicesBackend
+      dockerfile: Dockerfile
+    image: backendcustom
+    container_name: backend-main
+    ports:
+      - "50000:80"
+    networks:
+      - db_network
   
   thermostat-1:
     build:
