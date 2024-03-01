@@ -5,6 +5,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -30,28 +32,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  deleteRoom(roomId: number): void {
-    this.httpClient.delete(this.baseUrl+`/DeleteRoom?roomId=${roomId}`).subscribe((data: any) => {
-      console.log(`Raum mit der ID ${roomId} wurde erfolgreich gelöscht.`);
-      this.getAllRooms();
-    });
-  }
-
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
       this.httpClient.get(this.baseUrl+`/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
         room.temperature = temperatureData.thermostat.temperature;
       });
-    });
-  }
-
-  changeTemperature(roomId: number, newTemperature: number): void {
-
-    this.httpClient.post<any>(this.baseUrl+`/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
-      console.log('Temperature changed successfully');
-      this.getAllRooms();
-    }, (error) => {
-      console.error('Error while changing temperature:', error);
     });
   }
 
@@ -86,18 +71,6 @@ export class AppComponent implements OnInit {
     body.appendChild(button);
   }
 
-  openChangeTemperatureWindow(roomId: number) {
-    const newTemperature = prompt('Geben Sie die neue Temperatur ein:');
-    if (newTemperature !== null) {
-      const parsedTemperature = parseFloat(newTemperature);
-      if (!isNaN(parsedTemperature)) {
-        this.changeTemperature(roomId, parsedTemperature);
-      } else {
-        alert('Ungültige Eingabe! Bitte geben Sie eine numerische Temperatur ein.');
-      }
-    }
-  }
-
   addRoom(name, id): void {
     let newRoomId;
     this.httpClient.post<number>(this.baseUrl+"/AddRoom?roomName=" + name, null).subscribe((response: number) => {
@@ -108,22 +81,6 @@ export class AppComponent implements OnInit {
         });
       }
     });
-  }
-
-  updateRoomName(roomId: number, newName: string): void {
-    this.httpClient.post<any>(this.baseUrl+`/UpdateRoomName?roomId=${roomId}&newRoomName=${newName}`, null).subscribe(() => {
-        console.log(`Room name updated successfully for room ID ${roomId}`);
-        this.getAllRooms(); // Update the room list after the name change
-      }, (error) => {
-        console.error('Error while updating room name:', error);
-      });
-  }
-
-  openChangeRoomNameWindow(roomId: number, currentName: string): void {
-    const newName = prompt(`Geben Sie den neuen Namen für Raum ${currentName} ein:`);
-    if (newName !== null) {
-      this.updateRoomName(roomId, newName);
-    }
   }
 
   checkForFreeId(givenId, button, textarea) {
@@ -151,23 +108,23 @@ export class AppComponent implements OnInit {
 
   }
 
-  addThermostatAndAssignToRoom(roomId: number): void {
-    this.httpClient.post<any>(this.baseUrl+'/AddThermostat', null).subscribe((thermostatId: number) => {
-      this.httpClient.post<any>(this.baseUrl+`/AssignThermostatToRoom?roomId=${roomId}&thermostatId=${thermostatId}`, null)
-        .subscribe(() => {
-          console.log(`Thermostat added and assigned to room ID ${roomId}`);
-          this.getAllRooms(); // Update the room list after adding the thermostat
-        }, (error) => {
-          console.error('Error while assigning thermostat to room:', error);
-        });
-    }, (error) => {
-      console.error('Error while adding thermostat:', error);
-    });
-  }
-
   ngOnInit(): void {
     this.getAllRooms();
   }
+
+  constructor(public dialog: MatDialog) { }
+
+  openRoomDialog(roomId: number): void {
+    const dialogRef = this.dialog.open(RoomDialogComponent, {
+      width: '400px',
+      data: {roomId: roomId} // Hier können Sie Raumdaten übergeben, wenn erforderlich
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Das Dialogfenster wurde geschlossen');
+    });
+  }
+
 }
 
 export interface TupleResponse {

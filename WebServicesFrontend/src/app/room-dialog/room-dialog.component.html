@@ -1,0 +1,28 @@
+
+
+<!-- room-dialog.component.html -->
+
+<h2 mat-dialog-title>Raum bearbeiten</h2>
+<div mat-dialog-content>
+    <div class="room-name">{{rooms.roomName}}</div>
+    <br>
+    <div class="room-name">{{rooms.temperature}}</div><br>
+    <button mat-button (click)="openChangeTemperatureWindow()">
+        Temperatur anpassen
+    </button> <br>
+    <button mat-button (click)="openChangeRoomNameWindow()">
+        Raumnamen ändern
+    </button><br>
+    <button mat-button (click)="addThermostatAndAssignToRoom()">
+        Thermostat hinzufügen
+    </button><br>
+    <button mat-button (click)="deleteRoom()">
+        Raum löschen
+    </button>
+</div>
+
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Abbrechen</button>
+    <button mat-button color="primary" (click)="onSave()">Speichern</button>
+</div>
