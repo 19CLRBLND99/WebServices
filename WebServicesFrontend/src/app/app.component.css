@@ -1,27 +1,31 @@
 /*Defines the base CSS stylesheet for the root AppComponent.*/
 
-h2 {
-    margin: 20px;
-}
-
-button {
-    height: 25px;
-    width: 175px;
+.title {
+    font-size: 100px;
     margin: 5px;
+    padding-top: 20px;
 }
-
 
 .room-name{
-    padding: 5px;
+    font-size: 30px;
+    padding-top: 15px;
+}
+
+.temperature {
+    font-size: 27px;
+    padding-bottom: 10px;
 }
 
 .box{
-    width: 190px;
-    height: 220px;
-    border: 1px solid black;
-    margin-top: 10px;
-    margin-bottom:10px;
-    text-align: center;
+    width: 250px;
+    height: 250px;
+    background: #eee;
+    border: 1px solid #DDD;
+    background: -moz-linear-gradient(top, #EEE, #FFF);    
+    background: -webkit-linear-gradient(top, #eee, #fff);
+    background: -ms-linear-gradient(top, #eee, #fff);
+    background: -o-linear-gradient(top, #eee, #fff);
+    box-shadow: 1px 2px 4px rgba(0,0,0, .2);
 }
 
 .header {
@@ -68,7 +72,35 @@ button {
     text-align: center;
   }
 
-.buttons {
-    padding: 30px;
+.add-room-button {
+    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 8px;
+    height: 30px;
+    width: 120px;
+    border: none;
+    background: #5e41de33;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.settings-button {
+    font-size: 17px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    margin: 10px;
+    gap: 8px;
+    height: 90px;
+    width: 90px;
+    border: none;
+    background: #51565C;
+    border-radius: 20px;
+    cursor: pointer;
 }
 
