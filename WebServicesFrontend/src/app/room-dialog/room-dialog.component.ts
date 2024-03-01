@@ -5,6 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTemperatureDialogComponent } from '../edit-temperature-dialog/edit-temperature-dialog.component';
+import { RoomNameDialogComponent } from '../edit-roomname-dialog/edit-roomname-dialog.component'
+import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
 
 
 @Component({
@@ -22,7 +24,8 @@ export class RoomDialogComponent {
     public dialogRef: MatDialogRef<RoomDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private confirmationDialogService: ConfirmationDialogService
   ) {  }
 
   getAllRooms(): void {
@@ -33,11 +36,20 @@ export class RoomDialogComponent {
     });
   }
 
-  deleteRoom(): void {
-    this.httpClient.delete(this.baseUrl+`/DeleteRoom?roomId=${this.data.roomId}`).subscribe((data: any) => {
-      console.log(`Raum mit der ID ${this.data.roomId} wurde erfolgreich gelöscht.`);
-      this.getAllRooms();
-    });
+  async deleteRoom(): Promise<void> {
+    const confirmed = await this.confirmationDialogService.openConfirmationDialog(
+      'Löschen bestätigen',
+      'Sind Sie sicher, dass Sie diesen Raum löschen möchten?'
+    );
+
+    if (confirmed) {
+      // Führen Sie hier die Löschlogik aus
+      this.httpClient.delete(this.baseUrl + `/DeleteRoom?roomId=${this.data.roomId}`).subscribe((data: any) => {
+        console.log(`Raum mit der ID ${this.data.roomId} wurde erfolgreich gelöscht.`);
+      });
+    } else {
+      console.log('Löschen abgebrochen');
+    }
   }
 
   getTemperaturesForRooms(): void {
@@ -93,10 +105,15 @@ export class RoomDialogComponent {
   }
 
   openChangeRoomNameWindow(): void {
-    const newName = prompt(`Geben Sie den neuen Namen für den Raum ein:`);
-    if (newName !== null) {
-      this.updateRoomName(this.data.roomId, newName);
-    }
+    const dialogRef = this.dialog.open(RoomNameDialogComponent, {
+      width: '250px',
+      data: { roomId: this.data.roomId, currentName: this.data.roomname }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Das Dialogfenster wurde geschlossen');
+      // Hier können Sie die Logik implementieren, die nach dem Schließen des Dialogfensters ausgeführt werden soll
+    });
   }
 
   onSave(): void {
@@ -107,7 +124,4 @@ export class RoomDialogComponent {
   onCancel(): void {
     this.dialogRef.close();
   }
-
-
-
 }

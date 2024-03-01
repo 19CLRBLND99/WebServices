@@ -6,7 +6,7 @@
 <div mat-dialog-content>
     <div class="room-name">{{rooms.roomName}}</div>
     <br>
-    <div class="room-name">{{rooms.temperature}}</div><br>
+    <div class="room-name">{{this.data.temperature}}</div><br>
     <button mat-button (click)="openChangeTemperatureWindow()">
         Temperatur anpassen
     </button> <br>
