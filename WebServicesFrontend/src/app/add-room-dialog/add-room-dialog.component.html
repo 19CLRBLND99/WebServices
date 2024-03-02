@@ -1,14 +1,14 @@
 <h2 mat-dialog-title>Neuen Raum hinzufügen</h2>
 <div mat-dialog-content>
     <mat-form-field>
-        <input matInput placeholder="Raumname" [(ngModel)]="roomName" name="roomName" required>
+        <input matInput placeholder="Raumname (Required)" [(ngModel)]="roomName" (keyup)="checkForCorrectInput(roomInput,saveButton,thermoId)" #roomInput name="roomName" required>
     </mat-form-field>
     <br>
     <mat-form-field>
-        <input matInput type="number" placeholder="Thermostat ID (Optional)" [(ngModel)]="thermostatId" name="thermostatId">
+        <input matInput type="number" placeholder="Thermostat ID (Optional)" [(ngModel)]="thermostatId" (keyup)="checkForFreeId(saveButton,thermoId)" #thermoId name="thermostatId" disabled>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Abbrechen</button>
-    <button mat-button color="primary" (click)="onSave()">Speichern</button>
+    <button mat-button color="primary" (click)="onSave()" #saveButton disabled>Speichern</button>
 </div>

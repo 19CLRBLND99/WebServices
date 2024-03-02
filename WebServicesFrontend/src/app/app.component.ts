@@ -56,30 +56,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  checkForFreeId(givenId, button, textarea) {
-    var taken = false;
-
-    if (givenId != "") {
-      if (textarea != "") {
-        this.httpClient.get(this.baseUrl+"/CheckThermostatId?thermostatId=" + givenId).subscribe((data: TupleResponse) => {
-          console.log(data);
-          taken = data.item1.valueOf();
-          if (data.item2 != null) {
-            var listItems = data.item2.join(",");
-            console.log("Thermostat id is already taken! Unused Thermostats: " + listItems);
-          }
-          button.disabled = !taken;
-        });
-      } else {
-        button.disabled = true;
-      }
-    }else{
-      if (textarea != ""){
-        button.disabled = false;
-      }
-    }
-
-  }
+  
 
   ngOnInit(): void {
     this.getAllRooms();
@@ -96,9 +73,4 @@ export class AppComponent implements OnInit {
     });
   }
 
-}
-
-export interface TupleResponse {
-  item1: boolean;
-  item2: any[]; // Hier kannst du den Datentyp der Liste spezifizieren, den deine API zurückgibt
 }
