@@ -29,6 +29,7 @@ export class AddRoomDialogComponent {
   onSave(): void {
     if (this.roomName) {
       this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); // Raum erstellen
+      window.location.reload();
     } else {
       alert('Bitte geben Sie einen Raumnamen ein.');
     }

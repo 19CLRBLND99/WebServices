@@ -53,8 +53,9 @@ export class RoomNameDialogComponent {
     if (this.newRoomName) {
       this.updateRoomName(this.data.roomId, this.newRoomName); // Aufruf der Methode changeTemperature
       this.dialogRef.close(this.newRoomName);
+      window.location.reload();
     } else {
-      // Handle invalid input
+      alert('Geben Sie einen neuen Raumnamen ein!');
     }
     this.dialogRef.close(this.newRoomName);
   }

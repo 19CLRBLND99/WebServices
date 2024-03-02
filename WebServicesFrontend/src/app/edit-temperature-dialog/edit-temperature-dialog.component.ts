@@ -54,8 +54,9 @@ export class EditTemperatureDialogComponent {
     if (!isNaN(this.newTemperature)) {
       this.changeTemperature(this.data.roomId, this.newTemperature); // Aufruf der Methode changeTemperature
       this.dialogRef.close(this.newTemperature);
+      window.location.reload();
     } else {
-      // Handle invalid input
+      alert('Geben Sie eine Temperatur an!');
     }
   }
 
