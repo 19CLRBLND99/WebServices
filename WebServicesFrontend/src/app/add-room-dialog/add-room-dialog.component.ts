@@ -13,9 +13,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddRoomDialogComponent {
   baseUrl: String = 'http://localhost:50000';
-  roomName: string; 
+  roomName: string;
   thermostatId: number;
-
   constructor(
     public dialogRef: MatDialogRef<AddRoomDialogComponent>,
     private httpClient: HttpClient,
@@ -26,6 +25,51 @@ export class AddRoomDialogComponent {
     this.dialogRef.close();
   }
 
+
+  checkForCorrectInput(inputField: HTMLInputElement, saveButton: HTMLButtonElement, thermostatId: HTMLInputElement) {
+    const roomName = inputField.value;
+    var disableButton;
+    var specialChars = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
+    var specialCharsOrDigit = /[\d!"#$%&'()*+,-./:;<=>?@\[\\\]^_`{|}~]/;
+    if (roomName.length == 0) {
+      disableButton = true;
+    } else {
+      if (specialCharsOrDigit.test(roomName.charAt(0))) {
+        disableButton = true;
+        //hier dann irgendiwe dem nutzer sagen, dass ein falsches zeichen am anfang ist
+      } else {
+        disableButton = specialChars.test(roomName);
+      }
+    }
+    if (disableButton) {
+      thermostatId.disabled = true;
+      saveButton.disabled = true;
+    } else {
+      thermostatId.disabled = false;
+      saveButton.disabled = this.checkForFreeId(saveButton,thermostatId);
+    }
+  }
+
+  checkForFreeId(saveButton: HTMLButtonElement, thermostatId: HTMLInputElement): boolean {
+    var unused = false;
+    if (thermostatId.valueAsNumber > 25) {
+      alert("zu groß");//hier dann dem benutzer sagen, dass er ne kleinere Zahl eingeben soll
+      saveButton.disabled = true;
+      
+    } else {
+      this.httpClient.get(this.baseUrl + "/CheckThermostatId?thermostatId=" + thermostatId.value).subscribe((data: TupleResponse) => {
+        console.log(data);
+        unused = data.item1.valueOf();
+        if (data.item2 != null) {
+          var listItems = data.item2.join(",");
+          console.log("Thermostat id is already used! Unused Thermostats: " + listItems);
+        }
+        saveButton.disabled = !unused;
+      });
+    }
+    return unused;
+
+  }
   onSave(): void {
     if (this.roomName) {
       this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); // Raum erstellen
@@ -35,7 +79,7 @@ export class AddRoomDialogComponent {
   }
 
   createRoom(roomName: string, thermostatId: string | null): void {
-    this.httpClient.post<number>(this.baseUrl+'/AddRoom?roomName=' + roomName, null).subscribe((response: number) => {
+    this.httpClient.post<number>(this.baseUrl + '/AddRoom?roomName=' + roomName, null).subscribe((response: number) => {
       console.log('Raum erfolgreich erstellt:', response);
       if (thermostatId) {
         this.assignThermostat(response, thermostatId); // Thermostat zuweisen, falls eine ID vorhanden ist
@@ -49,7 +93,7 @@ export class AddRoomDialogComponent {
   }
 
   assignThermostat(roomId: number, thermostatId: string): void {
-    this.httpClient.post<any>(this.baseUrl+'/AssignThermostatToRoom?roomId=' + roomId + '&thermostatId=' + thermostatId, null).subscribe(response => {
+    this.httpClient.post<any>(this.baseUrl + '/AssignThermostatToRoom?roomId=' + roomId + '&thermostatId=' + thermostatId, null).subscribe(response => {
       console.log('Thermostat erfolgreich dem Raum zugewiesen:', response);
       this.dialogRef.close(true);
     }, error => {
@@ -57,4 +101,10 @@ export class AddRoomDialogComponent {
       // Hier können Sie eine Fehlerbehandlung implementieren, z.B. eine Fehlermeldung anzeigen
     });
   }
+
+
+}
+export interface TupleResponse {
+  item1: boolean;
+  item2: any[]; // Hier kannst du den Datentyp der Liste spezifizieren, den deine API zurückgibt
 }
