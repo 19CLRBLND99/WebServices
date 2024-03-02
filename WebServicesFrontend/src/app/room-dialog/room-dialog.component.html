@@ -7,10 +7,10 @@
     <div class="room-name">{{rooms.roomName}}</div>
     <br>
     <div class="room-name">{{this.data.temperature}}</div><br>
-    <button mat-button (click)="openChangeTemperatureWindow()">
+    <button mat-button (click)="openChangeTemperatureWindow(data.roomId)">
         Temperatur anpassen
     </button> <br>
-    <button mat-button (click)="openChangeRoomNameWindow()">
+    <button mat-button (click)="openChangeRoomNameWindow(data.roomId, data.roomName)">
         Raumnamen ändern
     </button><br>
     <button mat-button (click)="addThermostatAndAssignToRoom()">

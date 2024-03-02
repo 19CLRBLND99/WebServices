@@ -7,6 +7,7 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
+import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
   roomsWithTemperature: any = [];
   baseUrl: String = 'http://localhost:50000';
 
+  constructor(public dialog: MatDialog) { }
+
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
@@ -40,45 +43,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openAddWindow() {
-    var body = document.body;
-
-    // Erstelle ein neues Textfeld
-    var textfeld = document.createElement("input");
-    textfeld.type = "text";
-    textfeld.placeholder = "Raumname(Pflicht)";
-
-    var idTextArea = document.createElement("input");
-    idTextArea.type = "text";
-    idTextArea.placeholder = "Thermostat Id(Optional)";
-
-
-    // Erstelle einen neuen Button
-    var button = document.createElement("button");
-    button.innerHTML = "Hinzufügen!";
-    button.disabled = true;
-    button.addEventListener('click', () => {
-      this.addRoom(textfeld.value, idTextArea.value);
+  openAddRoomDialog(): void {
+    const dialogRef = this.dialog.open(AddRoomDialogComponent, {
+      width: '250px'
     });
-    textfeld.addEventListener("input", function () {
-      button.disabled = !textfeld.value;
-    });
-    idTextArea.onkeyup = event => { this.checkForFreeId(idTextArea.value, button, textfeld.value) };
-    textfeld.onkeyup = event => { this.checkForFreeId(idTextArea.value, button, textfeld.value) };
-    // Füge das Textfeld und den Button dem Body des Dokuments hinzu
-    body.appendChild(textfeld);
-    body.appendChild(idTextArea);
-    body.appendChild(button);
-  }
 
-  addRoom(name, id): void {
-    let newRoomId;
-    this.httpClient.post<number>(this.baseUrl+"/AddRoom?roomName=" + name, null).subscribe((response: number) => {
-      newRoomId = response;
-      if (id != "") {
-        this.httpClient.post<any>(this.baseUrl+"/AssignThermostatToRoom?roomId=" + newRoomId + "&thermostatId=" + id, null).subscribe(response => {
-          console.log(response); // Hier erhältst du die Antwort von der API
-        });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Hier können Sie die Logik für das Hinzufügen des Raums mit dem erhaltenen Raumnamen implementieren
+        console.log('Raumname:', result);
       }
     });
   }
@@ -111,8 +84,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.getAllRooms();
   }
-
-  constructor(public dialog: MatDialog) { }
 
   openRoomDialog(roomId: number): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {

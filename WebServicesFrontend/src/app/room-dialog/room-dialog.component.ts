@@ -70,9 +70,10 @@ export class RoomDialogComponent {
         });
   }
 
-  openChangeTemperatureWindow(): void {
+  openChangeTemperatureWindow(roomId: number): void {
     const dialogRef = this.dialog.open(EditTemperatureDialogComponent, {
       width: '250px',
+      data: { roomId: roomId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -83,31 +84,11 @@ export class RoomDialogComponent {
       }
     });
   }
-  
 
-  changeTemperature(roomId: number, newTemperature: number): void {
-
-    this.httpClient.post<any>(this.baseUrl+`/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null).subscribe((data: any) => {
-      console.log('Temperature changed successfully');
-      this.getAllRooms();
-    }, (error) => {
-      console.error('Error while changing temperature:', error);
-    });
-  }
-
-  updateRoomName(roomId: number, newName: string): void {
-    this.httpClient.post<any>(this.baseUrl+`/UpdateRoomName?roomId=${this.data.roomId}&newRoomName=${newName}`, null).subscribe(() => {
-        console.log(`Room name updated successfully for room ID ${roomId}`);
-        this.getAllRooms(); // Update the room list after the name change
-      }, (error) => {
-        console.error('Error while updating room name:', error);
-      });
-  }
-
-  openChangeRoomNameWindow(): void {
+  openChangeRoomNameWindow(roomId: number, roomName: string): void {
     const dialogRef = this.dialog.open(RoomNameDialogComponent, {
       width: '250px',
-      data: { roomId: this.data.roomId, currentName: this.data.roomname }
+      data: { roomId: roomId, currentName: roomName }
     });
   
     dialogRef.afterClosed().subscribe(result => {
