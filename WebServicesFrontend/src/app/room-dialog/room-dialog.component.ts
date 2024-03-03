@@ -80,9 +80,7 @@ export class RoomDialogComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        // Hier können Sie die neue Temperatur verarbeiten
         console.log('Neue Temperatur:', result);
-        // this.changeTemperature(roomId, result);
       }
     });
   }
@@ -95,7 +93,6 @@ export class RoomDialogComponent {
   
     dialogRef.afterClosed().subscribe(result => {
       console.log('Das Dialogfenster wurde geschlossen');
-      // Hier können Sie die Logik implementieren, die nach dem Schließen des Dialogfensters ausgeführt werden soll
     });
   }
 

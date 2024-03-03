@@ -16,6 +16,7 @@ export class EditTemperatureDialogComponent {
   baseUrl: String = 'http://localhost:50000';
   newTemperature: number;
   rooms: any = [];
+  onSaveDisabled: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditTemperatureDialogComponent>,
@@ -51,14 +52,15 @@ export class EditTemperatureDialogComponent {
   }
 
   onSave(): void {
-    if (!isNaN(this.newTemperature)) {
-      this.changeTemperature(this.data.roomId, this.newTemperature); // Aufruf der Methode changeTemperature
+    if (!isNaN(this.newTemperature) && this.newTemperature >= 0) {
+      this.changeTemperature(this.data.roomId, this.newTemperature);
       this.dialogRef.close(this.newTemperature);
       window.location.reload();
     } else {
-      alert('Geben Sie eine Temperatur an!');
+      alert('Geben Sie eine positive Temperatur an!');
     }
   }
+  
 
   onCancel(): void {
     this.dialogRef.close();
