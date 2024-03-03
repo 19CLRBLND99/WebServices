@@ -8,18 +8,19 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'WebServicesFrontend';
   httpClient = inject(HttpClient);
-  rooms: any = [];
+  public rooms: any = [];
   thermostats: any = [];
   temperature: any = [];
   roomsWithTemperature: any = [];
@@ -50,27 +51,28 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Hier können Sie die Logik für das Hinzufügen des Raums mit dem erhaltenen Raumnamen implementieren
         console.log('Raumname:', result);
       }
     });
   }
 
-  
-
   ngOnInit(): void {
     this.getAllRooms();
   }
 
-  openRoomDialog(roomId: number): void {
+  openRoomDialog(room: any): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
       width: '400px',
-      data: {roomId: roomId} // Hier können Sie Raumdaten übergeben, wenn erforderlich
+      data: {room: room} // Hier können Sie Raumdaten übergeben, wenn erforderlich
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Das Dialogfenster wurde geschlossen');
     });
+  }
+
+  hasThermostat(room: any): boolean {
+    return room.thermostatId !== null;
   }
 
 }

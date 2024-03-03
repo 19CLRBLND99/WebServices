@@ -57,6 +57,7 @@ export class AddRoomDialogComponent {
       saveButton.disabled = true;
       
     } else {
+      if (thermostatId.value.length > 0){
       this.httpClient.get(this.baseUrl + "/CheckThermostatId?thermostatId=" + thermostatId.value).subscribe((data: TupleResponse) => {
         console.log(data);
         unused = data.item1.valueOf();
@@ -65,7 +66,7 @@ export class AddRoomDialogComponent {
           console.log("Thermostat id is already used! Unused Thermostats: " + listItems);
         }
         saveButton.disabled = !unused;
-      });
+      });}
     }
     return unused;
 

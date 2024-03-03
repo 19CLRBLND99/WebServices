@@ -7,12 +7,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditTemperatureDialogComponent } from '../edit-temperature-dialog/edit-temperature-dialog.component';
 import { RoomNameDialogComponent } from '../edit-roomname-dialog/edit-roomname-dialog.component'
 import { ConfirmationDialogService } from '../confirmation-dialog/confirmation-dialog.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-room-dialog',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, CommonModule],
   templateUrl: './room-dialog.component.html',
   styleUrls: ['./room-dialog.component.css']
 })
@@ -26,7 +27,7 @@ export class RoomDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private httpClient: HttpClient,
     private confirmationDialogService: ConfirmationDialogService
-  ) {  }
+  ) { console.log(data); }
 
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
@@ -43,9 +44,8 @@ export class RoomDialogComponent {
     );
 
     if (confirmed) {
-      // Führen Sie hier die Löschlogik aus
-      this.httpClient.delete(this.baseUrl + `/DeleteRoom?roomId=${this.data.roomId}`).subscribe((data: any) => {
-        console.log(`Raum mit der ID ${this.data.roomId} wurde erfolgreich gelöscht.`);
+      this.httpClient.delete(this.baseUrl + `/DeleteRoom?roomId=${this.data.room.roomId}`).subscribe((data: any) => {
+        console.log(`Raum mit der ID ${this.data.room.roomId} wurde erfolgreich gelöscht.`);
       });
     } else {
       console.log('Löschen abgebrochen');
@@ -61,9 +61,9 @@ export class RoomDialogComponent {
   }
 
   addThermostatAndAssignToRoom(): void {
-      this.httpClient.post<any>(this.baseUrl+`/AssignThermostatToRoom?roomId=${this.data.roomId}&thermostatId=${this.data.roomId}`, null)
+      this.httpClient.post<any>(this.baseUrl+`/AssignThermostatToRoom?roomId=${this.data.room.roomId}&thermostatId=${this.data.room.roomId}`, null)
         .subscribe(() => {
-          console.log(`Thermostat added and assigned to room ID ${this.data.roomId}`);
+          console.log(`Thermostat added and assigned to room ID ${this.data.room.roomId}`);
           this.getAllRooms(); // Update the room list after adding the thermostat
         }, (error) => {
           console.error('Error while assigning thermostat to room:', error);
@@ -95,11 +95,6 @@ export class RoomDialogComponent {
       console.log('Das Dialogfenster wurde geschlossen');
       // Hier können Sie die Logik implementieren, die nach dem Schließen des Dialogfensters ausgeführt werden soll
     });
-  }
-
-  onSave(): void {
-    // Hier können Sie Ihre Logik für das Speichern der Raumdaten implementieren
-    this.dialogRef.close();
   }
 
   onCancel(): void {

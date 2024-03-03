@@ -1,8 +1,9 @@
 /*Defines the base CSS stylesheet for the root AppComponent.*/
 
 .title {
-    font-size: 100px;
+    font-size: 40px;
     margin: 5px;
+    padding-left: 20px;
     padding-top: 20px;
 }
 
@@ -13,7 +14,10 @@
 
 .temperature {
     font-size: 27px;
-    padding-bottom: 10px;
+}
+
+.ids {
+    font-size: 20px;
 }
 
 .box{
@@ -29,24 +33,13 @@
 }
 
 .header {
+    font-size: 30px;
+
     overflow: hidden;
-    background-color: #f1f1f1;
-    padding: 20px 10px;
-}
-
-.header h2 {
-    float: left;
-    color: black;
+    background-color: #51565C;
+    padding: 30px;
+    color: #FFF;
     text-align: center;
-    padding: 12px;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 25px;
-    border-radius: 4px;
-}
-
-.header-right {
-    float: right;
 }
 
 @media screen and (max-width: 500px) {
@@ -61,9 +54,12 @@
 }
 
 .grid-container {
-    display: inline-grid;
-    grid-template-columns: auto auto auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    grid-auto-rows: auto;
+    grid-gap: 10px;
     padding: 10px;
+    grid-auto-flow: row; 
 }
 
 .grid-item {
@@ -74,15 +70,18 @@
 
 .add-room-button {
     font-size: 17px;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 6px 12px;
+    margin-top: 25px;
+    margin-left: 25px;
     gap: 8px;
-    height: 30px;
-    width: 120px;
+    height: 40px;
+    width: 150px;
     border: none;
-    background: #5e41de33;
+    background: #51565C;
     border-radius: 20px;
     cursor: pointer;
 }

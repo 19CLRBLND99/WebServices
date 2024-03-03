@@ -1,4 +1,4 @@
 <h1>Temperatur bearbeiten</h1>
-<input type="number" [(ngModel)]="newTemperature" placeholder="Neue Temperatur">
-<button mat-raised-button color="primary" (click)="onSave()">Speichern</button>
-<button mat-raised-button color="warn" (click)="onCancel()">Abbrechen</button>
+<input type="number" [(ngModel)]="newTemperature" placeholder="Neue Temperatur" class="temperature-input">
+<button mat-raised-button color="primary" (click)="onSave()" class="temperature-button">Speichern</button>
+<button mat-raised-button color="warn" (click)="onCancel()" class="temperature-button">Abbrechen</button>

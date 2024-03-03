@@ -1,28 +1,20 @@
-
-
-<!-- room-dialog.component.html -->
-
-<h2 mat-dialog-title>Raum bearbeiten</h2>
+<div mat-dialog-title class="title">Raum bearbeiten</div>
 <div mat-dialog-content>
-    <div class="room-name">{{rooms.roomName}}</div>
-    <br>
-    <div class="room-name">{{this.data.temperature}}</div><br>
-    <button mat-button (click)="openChangeTemperatureWindow(data.roomId)">
+    <button *ngIf="data.room.thermostatId !== 0" mat-button (click)="openChangeTemperatureWindow(data.room.roomId)" class="buttons">
         Temperatur anpassen
-    </button> <br>
-    <button mat-button (click)="openChangeRoomNameWindow(data.roomId, data.roomName)">
+    </button> <br *ngIf="data.room.thermostatId !== 0" >
+    <button mat-button (click)="openChangeRoomNameWindow(data.room.roomId, data.room.roomName)" class="buttons">
         Raumnamen ändern
     </button><br>
-    <button mat-button (click)="addThermostatAndAssignToRoom()">
-        Thermostat hinzufügen
-    </button><br>
-    <button mat-button (click)="deleteRoom()">
+    <button mat-button (click)="deleteRoom()" class="buttons">
         Raum löschen
+    </button><br>
+    <button *ngIf="data.room.thermostatId === 0" mat-button (click)="addThermostatAndAssignToRoom()" class="buttons">
+        Thermostat hinzufügen
     </button>
 </div>
 
 
 <div mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Abbrechen</button>
-    <button mat-button color="primary" (click)="onSave()">Speichern</button>
+    <button mat-button (click)="onCancel()" class="close">Schließen</button>
 </div>

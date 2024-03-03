@@ -3,36 +3,30 @@
 <main class="main">
 
     <div class="header">
-        <h2 class="logo">Logo</h2>
-        <div class="header-right">
-            <h2>SmartHome Shit</h2>
-        </div>
+        SmartHome
     </div>
 
-    <div class="title"><h2>Räume: </h2></div>
+    <div class="title">Räume: </div>
+    <div>
+        <button mat-button (click)="openAddRoomDialog()" class="add-room-button">
+            Neuen Raum hinzufügen
+        </button>
+    </div>
     <div class="grid-container">
         @for(room of rooms;track "room.roomId"){
             <div class="grid-item">
                 <div class="box">
                     <div class="room-name">{{room.roomName}}</div>
                     <br>
-                    <div class="temperature">{{room.temperature}}°C</div>
-                    <button mat-button (click)="openRoomDialog(room.roomId)" class="settings-button">
+                    <div *ngIf="room.thermostatId !== 0" class="temperature">{{room.temperature}}°C</div><br> 
+                    <div class="ids">Raum ID: {{room.roomId}}<br>
+                    Thermostat ID: {{room.thermostatId}}</div>
+                    <button mat-button (click)="openRoomDialog(room)" class="settings-button">
                         Raum bearbeiten
                     </button>
-
                 </div>
             </div>
-            
         }
-    </div>
-        
-    <div>
-        <div>
-            <button mat-button (click)="openAddRoomDialog()">
-              Neuen Raum hinzufügen
-            </button>
-          </div>
     </div>
 
 </main>
