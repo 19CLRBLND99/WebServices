@@ -20,7 +20,7 @@
                     <br>
                     <div *ngIf="room.thermostatId !== 0" class="temperature">{{room.temperature}}°C</div><br> 
                     <div class="ids">Raum ID: {{room.roomId}}<br>
-                    Thermostat ID: {{room.thermostatId}}</div>
+                    <div *ngIf="room.thermostatId !== 0">Thermostat ID: {{room.thermostatId}}</div></div>
                     <button mat-button (click)="openRoomDialog(room)" class="settings-button">
                         Raum bearbeiten
                     </button>

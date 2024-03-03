@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
 
   openAddRoomDialog(): void {
     const dialogRef = this.dialog.open(AddRoomDialogComponent, {
-      width: '250px'
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

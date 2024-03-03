@@ -1,8 +1,15 @@
 .temperature-button {
     width: 120px;
-    margin: 5px;
+    margin-left: 5px;
 }
 
 .temperature-input {
-    
+    width: 150px;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+
+.edit-temperature-title {
+    color: #fff;
+    margin: 5px;
 }
