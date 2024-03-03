@@ -24,6 +24,7 @@ export class RoomNameDialogComponent {
     this.newRoomName = data.currentName;
   }
 
+  //Method to fetch all Rooms 
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
@@ -32,6 +33,7 @@ export class RoomNameDialogComponent {
     });
   }
 
+  //Method to fetch the temperatures of the rooms
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
       this.httpClient.get(this.baseUrl+`/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
@@ -40,10 +42,11 @@ export class RoomNameDialogComponent {
     });
   }
 
+  //Method for changing Room Name
   updateRoomName(roomId: number, newName: string): void {
     this.httpClient.post<any>(this.baseUrl+`/UpdateRoomName?roomId=${this.data.roomId}&newRoomName=${newName}`, null).subscribe(() => {
         console.log(`Room name updated successfully for room ID ${roomId}`);
-        this.getAllRooms(); // Update the room list after the name change
+        this.getAllRooms(); //Update the room list after the name change
       }, (error) => {
         console.error('Error while updating room name:', error);
       });
@@ -51,9 +54,9 @@ export class RoomNameDialogComponent {
 
   onSave(): void {
     if (this.newRoomName) {
-      this.updateRoomName(this.data.roomId, this.newRoomName); // Aufruf der Methode changeTemperature
+      this.updateRoomName(this.data.roomId, this.newRoomName); //call Function for Changing Roomname 
       this.dialogRef.close(this.newRoomName);
-      window.location.reload();
+      window.location.reload(); //Reload window to display new name
     } else {
       alert('Geben Sie einen neuen Raumnamen ein!');
     }
@@ -61,6 +64,6 @@ export class RoomNameDialogComponent {
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(); //close Pop Up Window
   }
 }

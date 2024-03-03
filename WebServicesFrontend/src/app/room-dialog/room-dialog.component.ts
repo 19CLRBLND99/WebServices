@@ -29,6 +29,7 @@ export class RoomDialogComponent {
     private confirmationDialogService: ConfirmationDialogService
   ) { console.log(data); }
 
+  //Method to fetch all Rooms 
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
@@ -37,22 +38,27 @@ export class RoomDialogComponent {
     });
   }
 
+  //Method for deleting Room 
   async deleteRoom(): Promise<void> {
+    //async to await answer from the confirmation box
     const confirmed = await this.confirmationDialogService.openConfirmationDialog(
       'Löschen bestätigen',
       'Sind Sie sicher, dass Sie diesen Raum löschen möchten?'
     );
-
+    
+    //confirmation input "yes"
     if (confirmed) {
       this.httpClient.delete(this.baseUrl + `/DeleteRoom?roomId=${this.data.room.roomId}`).subscribe((data: any) => {
         console.log(`Raum mit der ID ${this.data.room.roomId} wurde erfolgreich gelöscht.`);
         window.location.reload();
       });
+      //confirmation input "no"
     } else {
       console.log('Löschen abgebrochen');
     }
   }
 
+  //Method to fetch the temperatures of the rooms
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
       this.httpClient.get(this.baseUrl+`/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
@@ -61,6 +67,7 @@ export class RoomDialogComponent {
     });
   }
 
+  //Assigning Thermostat to a Room 
   addThermostatAndAssignToRoom(): void {
       this.httpClient.post<any>(this.baseUrl+`/AssignThermostatToRoom?roomId=${this.data.room.roomId}&thermostatId=${this.data.room.roomId}`, null)
         .subscribe(() => {
@@ -72,6 +79,7 @@ export class RoomDialogComponent {
         });
   }
 
+  //open Pop Up Window for changing Temperature
   openChangeTemperatureWindow(roomId: number): void {
     const dialogRef = this.dialog.open(EditTemperatureDialogComponent, {
       width: '250px',
@@ -85,6 +93,7 @@ export class RoomDialogComponent {
     });
   }
 
+  //open Pop Up Window for changing Name
   openChangeRoomNameWindow(roomId: number, roomName: string): void {
     const dialogRef = this.dialog.open(RoomNameDialogComponent, {
       width: '250px',

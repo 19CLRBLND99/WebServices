@@ -19,6 +19,6 @@ export class AppErrorDialogComponent {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(); //closing error Pop Up 
   }
 }

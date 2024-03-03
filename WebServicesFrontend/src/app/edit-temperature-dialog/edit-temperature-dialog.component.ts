@@ -24,6 +24,7 @@ export class EditTemperatureDialogComponent {
     private httpClient: HttpClient
   ) { }
 
+  //Method to fetch all Rooms 
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
@@ -32,6 +33,7 @@ export class EditTemperatureDialogComponent {
     });
   }
 
+  //Method to fetch the temperatures of the rooms
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
       this.httpClient.get(this.baseUrl+`/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
@@ -40,6 +42,7 @@ export class EditTemperatureDialogComponent {
     });
   }
 
+  //Method for changing Temperature
   changeTemperature(roomId: number, newTemperature: number): void {
      this.httpClient.post<any>(this.baseUrl+`/UpdateRoomTemperature?roomId=${roomId}&newTemperature=${newTemperature}`, null)
       .subscribe((data: any) => {
@@ -53,14 +56,13 @@ export class EditTemperatureDialogComponent {
 
   onSave(): void {
     if (!isNaN(this.newTemperature) && this.newTemperature >= 0) {
-      this.changeTemperature(this.data.roomId, this.newTemperature);
+      this.changeTemperature(this.data.roomId, this.newTemperature);//call Function for changin temperature
       this.dialogRef.close(this.newTemperature);
-      window.location.reload();
+      window.location.reload(); //Reload window to display new Temperature
     } else {
       alert('Geben Sie eine positive Temperatur an!');
     }
   }
-  
 
   onCancel(): void {
     this.dialogRef.close();

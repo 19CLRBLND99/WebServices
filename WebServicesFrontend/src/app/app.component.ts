@@ -1,7 +1,3 @@
-//Defines the logic for the application's root component, named AppComponent. 
-//The view associated with this root component becomes the root of the view 
-//hierarchy as you add components and services to your application.
-
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -31,6 +27,11 @@ export class AppComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
 
+  ngOnInit(): void {
+    this.getAllRooms();
+  }
+
+  //Method to fetch all Rooms 
   getAllRooms(): void {
     this.httpClient.get(this.baseUrl+'/GetAllRooms').subscribe((data: any) => {
       this.rooms = data;
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  //Method to fetch the temperatures of the rooms
   getTemperaturesForRooms(): void {
     this.rooms.forEach((room) => {
       this.httpClient.get(this.baseUrl+`/GetRoomWithThermostatByRoomId?roomId=${room.roomId}`).subscribe((temperatureData: any) => {
@@ -47,14 +49,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  //open Pop Up Window for adding a Room
   openAddRoomDialog(): void {
     this.getRoomCount().subscribe((roomCount: number) => {
       console.log("Roomcount:"+roomCount)
+      //when there are 25 rooms: error Pop up shows
     if (roomCount >= 25) {
       this.dialog.open(AppErrorDialogComponent, {
         width: '400px',
         data: { errorMessage: 'Es dürfen nur 25 Räume hinzugefügt werden!' }
       });
+      //when there are less then 25 rooms: add room window
     } else {
       const dialogRef = this.dialog.open(AddRoomDialogComponent, {
         width: '400px',
@@ -70,14 +75,11 @@ export class AppComponent implements OnInit {
   });
   }
 
-  ngOnInit(): void {
-    this.getAllRooms();
-  }
-
+  //open Pop up window for Room Configurations
   openRoomDialog(room: any): void {
     const dialogRef = this.dialog.open(RoomDialogComponent, {
       width: '400px',
-      data: {room: room} // Hier können Sie Raumdaten übergeben, wenn erforderlich
+      data: {room: room}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -85,7 +87,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  
+  //get the number of rooms 
   getRoomCount(): Observable<number> {
     return this.httpClient.get<any[]>(this.baseUrl + '/GetAllRooms').pipe(
       map(rooms => rooms.length)

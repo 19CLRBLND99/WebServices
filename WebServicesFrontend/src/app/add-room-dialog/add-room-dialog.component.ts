@@ -21,10 +21,6 @@ export class AddRoomDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-  onCancel(): void {
-    this.dialogRef.close();
-  }
-
   checkForCorrectInput(inputField: HTMLInputElement, saveButton: HTMLButtonElement, thermostatId: HTMLInputElement, unusedIdsField: HTMLDivElement) {
     //there are specific rules for the name input which are checked at every key up event
     const roomName = inputField.value;
@@ -89,16 +85,6 @@ export class AddRoomDialogComponent {
     return unused;
   }
 
-  onSave(): void {
-    if (this.data.roomCount >= 25) {
-      alert('Es können maximal 25 Räume erstellt werden.');
-    } else if (this.roomName) {
-      this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); // Raum erstellen
-    } else {
-      alert('Bitte geben Sie einen Raumnamen ein.');
-    }
-  }
-
   createRoom(roomName: string, thermostatId: string | null): void {
     this.httpClient.post<number>(this.baseUrl + '/AddRoom?roomName=' + roomName, null).subscribe((response: number) => {
       console.log('Room successfully created! Response: ', response);
@@ -122,7 +108,17 @@ export class AddRoomDialogComponent {
     });
   }
 
+  onSave(): void {
+    if (this.roomName) {
+      this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); //Create Room after clicking on the button
+    } else {
+      alert('Bitte geben Sie einen Raumnamen ein.'); //alert when there's no input
+    }
+  }
 
+  onCancel(): void {
+    this.dialogRef.close(); //close Pop Up Window after clicking cancel
+  }
 }
 //this is an extra class so the response of the api is correctly converted and can be used later
 export interface TupleResponse {
