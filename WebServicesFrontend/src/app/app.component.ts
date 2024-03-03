@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -45,14 +46,17 @@ export class AppComponent implements OnInit {
   }
 
   openAddRoomDialog(): void {
-    const dialogRef = this.dialog.open(AddRoomDialogComponent, {
-      width: '400px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Raumname:', result);
-      }
+    this.getRoomCount().subscribe((roomCount: number) => {
+      const dialogRef = this.dialog.open(AddRoomDialogComponent, {
+        width: '400px',
+        data: { roomCount: roomCount } // Übergeben Sie die Anzahl der Räume
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Raumname:', result);
+        }
+      });
     });
   }
 
@@ -71,8 +75,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  hasThermostat(room: any): boolean {
-    return room.thermostatId !== null;
+  
+  getRoomCount(): Observable<number> {
+    return this.httpClient.get<number>(this.baseUrl + '/GetAllRooms');
   }
 
 }

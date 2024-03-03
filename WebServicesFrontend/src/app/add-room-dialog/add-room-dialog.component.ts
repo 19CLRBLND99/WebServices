@@ -69,10 +69,12 @@ export class AddRoomDialogComponent {
       });}
     }
     return unused;
-
   }
+  
   onSave(): void {
-    if (this.roomName) {
+    if (this.data.roomCount >= 25) {
+      alert('Es können maximal 25 Räume erstellt werden.');
+    } else if (this.roomName) {
       this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); // Raum erstellen
       window.location.reload();
     } else {
