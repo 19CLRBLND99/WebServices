@@ -10,6 +10,8 @@ import { RoomDialogComponent } from './room-dialog/room-dialog.component';
 import { AddRoomDialogComponent } from './add-room-dialog/add-room-dialog.component';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AppErrorDialogComponent } from './app-error-dialog/app-error-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -47,9 +49,16 @@ export class AppComponent implements OnInit {
 
   openAddRoomDialog(): void {
     this.getRoomCount().subscribe((roomCount: number) => {
+      console.log("Roomcount:"+roomCount)
+    if (roomCount >= 25) {
+      this.dialog.open(AppErrorDialogComponent, {
+        width: '400px',
+        data: { errorMessage: 'Es dürfen nur 25 Räume hinzugefügt werden!' }
+      });
+    } else {
       const dialogRef = this.dialog.open(AddRoomDialogComponent, {
         width: '400px',
-        data: { roomCount: roomCount } // Übergeben Sie die Anzahl der Räume
+        data: { roomCount: roomCount } // Übergeben der Anzahl der Räume
       });
   
       dialogRef.afterClosed().subscribe(result => {
@@ -57,7 +66,8 @@ export class AppComponent implements OnInit {
           console.log('Raumname:', result);
         }
       });
-    });
+    }
+  });
   }
 
   ngOnInit(): void {
@@ -77,7 +87,9 @@ export class AppComponent implements OnInit {
 
   
   getRoomCount(): Observable<number> {
-    return this.httpClient.get<number>(this.baseUrl + '/GetAllRooms');
+    return this.httpClient.get<any[]>(this.baseUrl + '/GetAllRooms').pipe(
+      map(rooms => rooms.length)
+    );
   }
 
 }

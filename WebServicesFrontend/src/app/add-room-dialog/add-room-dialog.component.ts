@@ -25,7 +25,6 @@ export class AddRoomDialogComponent {
     this.dialogRef.close();
   }
 
-
   checkForCorrectInput(inputField: HTMLInputElement, saveButton: HTMLButtonElement, thermostatId: HTMLInputElement) {
     const roomName = inputField.value;
     var disableButton;
