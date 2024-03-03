@@ -98,7 +98,7 @@ export class AddRoomDialogComponent {
 
   assignThermostat(roomId: number, thermostatId: string): void {
     this.httpClient.post<any>(this.baseUrl + '/AssignThermostatToRoom?roomId=' + roomId + '&thermostatId=' + thermostatId, null).subscribe(response => {
-      alert('Thermostat erfolgreich dem Raum zugewiesen:'+ response);
+      console.log('Thermostat erfolgreich dem Raum zugewiesen:', response);
       this.dialogRef.close(true);
     }, error => {
       console.error('Fehler beim Zuweisen des Thermostats zum Raum:', error);
