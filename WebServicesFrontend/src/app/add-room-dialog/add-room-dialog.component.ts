@@ -29,7 +29,7 @@ export class AddRoomDialogComponent {
   checkForCorrectInput(inputField: HTMLInputElement, saveButton: HTMLButtonElement, thermostatId: HTMLInputElement) {
     const roomName = inputField.value;
     var disableButton;
-    var specialChars = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/;
+    var specialChars = /[!"#$%&'()*+,-./:;<=>?@\[\\\]^_`{|}~]/;
     var specialCharsOrDigit = /[\d!"#$%&'()*+,-./:;<=>?@\[\\\]^_`{|}~]/;
     if (roomName.length == 0) {
       disableButton = true;
@@ -53,9 +53,8 @@ export class AddRoomDialogComponent {
   checkForFreeId(saveButton: HTMLButtonElement, thermostatId: HTMLInputElement): boolean {
     var unused = false;
     if (thermostatId.valueAsNumber > 25) {
-      alert("zu groß");//hier dann dem benutzer sagen, dass er ne kleinere Zahl eingeben soll
+      alert("Maximal 25 Thermostate verfügbar!");//hier dann dem benutzer sagen, dass er ne kleinere Zahl eingeben soll
       saveButton.disabled = true;
-      
     } else {
       if (thermostatId.value.length > 0){
       this.httpClient.get(this.baseUrl + "/CheckThermostatId?thermostatId=" + thermostatId.value).subscribe((data: TupleResponse) => {
@@ -68,6 +67,7 @@ export class AddRoomDialogComponent {
         saveButton.disabled = !unused;
       });}
     }
+    this.thermostatId = thermostatId.valueAsNumber;
     return unused;
   }
   
@@ -76,7 +76,6 @@ export class AddRoomDialogComponent {
       alert('Es können maximal 25 Räume erstellt werden.');
     } else if (this.roomName) {
       this.createRoom(this.roomName, this.thermostatId ? this.thermostatId.toString() : null); // Raum erstellen
-      window.location.reload();
     } else {
       alert('Bitte geben Sie einen Raumnamen ein.');
     }
@@ -90,6 +89,7 @@ export class AddRoomDialogComponent {
       } else {
         this.dialogRef.close(true); // Dialogfenster schließen, unabhängig davon, ob ein Thermostat zugewiesen wird oder nicht
       }
+      window.location.reload();
     }, error => {
       console.error('Fehler beim Erstellen des Raums:', error);
       // Hier können Sie eine Fehlerbehandlung implementieren, z.B. eine Fehlermeldung anzeigen
@@ -98,7 +98,7 @@ export class AddRoomDialogComponent {
 
   assignThermostat(roomId: number, thermostatId: string): void {
     this.httpClient.post<any>(this.baseUrl + '/AssignThermostatToRoom?roomId=' + roomId + '&thermostatId=' + thermostatId, null).subscribe(response => {
-      console.log('Thermostat erfolgreich dem Raum zugewiesen:', response);
+      alert('Thermostat erfolgreich dem Raum zugewiesen:'+ response);
       this.dialogRef.close(true);
     }, error => {
       console.error('Fehler beim Zuweisen des Thermostats zum Raum:', error);
