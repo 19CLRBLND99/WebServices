@@ -46,6 +46,7 @@ export class RoomDialogComponent {
     if (confirmed) {
       this.httpClient.delete(this.baseUrl + `/DeleteRoom?roomId=${this.data.room.roomId}`).subscribe((data: any) => {
         console.log(`Raum mit der ID ${this.data.room.roomId} wurde erfolgreich gelöscht.`);
+        window.location.reload();
       });
     } else {
       console.log('Löschen abgebrochen');
@@ -65,6 +66,7 @@ export class RoomDialogComponent {
         .subscribe(() => {
           console.log(`Thermostat added and assigned to room ID ${this.data.room.roomId}`);
           this.getAllRooms(); // Update the room list after adding the thermostat
+          window.location.reload();
         }, (error) => {
           console.error('Error while assigning thermostat to room:', error);
         });
