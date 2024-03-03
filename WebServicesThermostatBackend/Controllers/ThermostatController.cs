@@ -8,9 +8,9 @@ namespace ThermostatBackend.Controllers
     [ApiController]
     public class ThermostatController : ControllerBase
     {
+        //if the action was successful, depends on the first part of the tuple and if its false, a bad Request is returned
         [Route("/updateTemperature")]
         [HttpPost]
-
         public IActionResult updateTemperature(double temperature)
         {
             var result = ThermostatService.updateTemperature(temperature);

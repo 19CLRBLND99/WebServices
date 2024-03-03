@@ -5,7 +5,8 @@ namespace ThermostatBackend.Service
 {
     public class ThermostatService
     {
-
+        //all of them return tuples because the first part shows if the action was successful
+        //and the other returns the changed value or the requested value
         public static Tuple<bool, double> updateTemperature(double temperature)
         {
             var result = ThermostatModel.setTemperature(temperature);
