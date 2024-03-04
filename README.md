@@ -8,6 +8,7 @@
 
 ## Mitglieder und Aufteilung
 - Github Name | Name            | Aufgabenbereiche                                    | Matrikelnummer
+- ------------+-----------------+-----------------------------------------------------+---------------
 - viggoy      | Victoria Michel | Frontend                                            | 7086207
 - MassivNikki | Niklas Bahr     | Frontend & Backend (Thermostat API)                 | 5883125
 - 19CLRBLND99 | Jan Throm       | Backend & Database (Zentrale)                       | 1323281
