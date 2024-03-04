@@ -16,7 +16,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+
+//CORS Policy. Very important! Mess with this and the frontend wont be allowed to access the backend :)
+app.UseCors(options => options.WithOrigins("http://127.0.0.1:1", "http://127.0.0.1:8080").AllowAnyHeader().AllowAnyMethod());
+
 
 app.UseHttpsRedirection();
 

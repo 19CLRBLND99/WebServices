@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
 
+
+  # Database for rooms, with the entrypoint "init-rooms.sql"
   mysql-rooms:
     image: mysql:latest
     container_name: mysql-rooms
@@ -13,8 +15,10 @@ services:
     volumes:
       - ./init-rooms.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - db_network
+      - thermostat_network
 
+
+  # Database for thermostats, with the entrypoint "init-thermostat.sql"
   mysql-thermostat:
     image: mysql:latest
     container_name: mysql-thermostat
@@ -26,9 +30,9 @@ services:
     volumes:
       - ./init-thermostat.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - db_network
+      - thermostat_network
 
-
+  # Backend. Requires both the databases
   backend:
     build:
       context: ./WebServicesBackend
@@ -38,8 +42,27 @@ services:
     ports:
       - "50000:80"
     networks:
-      - db_network
+      - thermostat_network
+    depends_on:
+      - mysql-thermostat
+      - mysql-rooms
+
+  #Frontend, requires the Backend. Also the output-port is routed outside the network ("thermostat-network") to the 127.0.0.1:8080 IP and Port combo
+  frontend:
+    build:
+      context: ./WebServicesFrontend
+      dockerfile: Dockerfile
+    image: frontendcustom
+    container_name: frontend-main
+    ports:
+      - "127.0.0.1:8080:80"
+    networks:
+      - thermostat_network
+    depends_on:
+      - backend
   
+  #Here comes the thermostats. THe first is the only one thats built. In the building process it creates an image, which is used by the others. This works well enough, but sadly leads to docker showing errors when trying to build the latter 24 thermostats. Creating the containers works fine.
+  #I could build 25 thermostats, but each build creates an image, which is ridiculous
   thermostat-1:
     build:
       context: ./WebServicesThermostatBackend
@@ -49,7 +72,7 @@ services:
     ports:
       - "50001:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-2:
     image: thermostatcustom
@@ -57,7 +80,7 @@ services:
     ports:
       - "50002:8080"
     networks:
-      - db_network
+      - thermostat_network
 
 
   thermostat-3:
@@ -66,7 +89,7 @@ services:
     ports:
       - "50003:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-4:
     image: thermostatcustom
@@ -74,7 +97,7 @@ services:
     ports:
       - "50004:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-5:
     image: thermostatcustom
@@ -82,7 +105,7 @@ services:
     ports:
       - "50005:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-6:
     image: thermostatcustom
@@ -90,7 +113,7 @@ services:
     ports:
       - "50006:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-7:
     image: thermostatcustom
@@ -98,7 +121,7 @@ services:
     ports:
       - "50007:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-8:
     image: thermostatcustom
@@ -106,7 +129,7 @@ services:
     ports:
       - "50008:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-9:
     image: thermostatcustom
@@ -114,7 +137,7 @@ services:
     ports:
       - "50009:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-10:
     image: thermostatcustom
@@ -122,7 +145,7 @@ services:
     ports:
       - "50010:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-11:
     image: thermostatcustom
@@ -130,7 +153,7 @@ services:
     ports:
       - "50011:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-12:
     image: thermostatcustom
@@ -138,7 +161,7 @@ services:
     ports:
       - "50012:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-13:
     image: thermostatcustom
@@ -146,7 +169,7 @@ services:
     ports:
       - "50013:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-14:
     image: thermostatcustom
@@ -154,7 +177,7 @@ services:
     ports:
       - "50014:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-15:
     image: thermostatcustom
@@ -162,7 +185,7 @@ services:
     ports:
       - "50015:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-16:
     image: thermostatcustom
@@ -170,7 +193,7 @@ services:
     ports:
       - "50016:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-17:
     image: thermostatcustom
@@ -178,7 +201,7 @@ services:
     ports:
       - "50017:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-18:
     image: thermostatcustom
@@ -186,7 +209,7 @@ services:
     ports:
       - "50018:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-19:
     image: thermostatcustom
@@ -194,7 +217,7 @@ services:
     ports:
       - "50019:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-20:
     image: thermostatcustom
@@ -202,7 +225,7 @@ services:
     ports:
       - "50020:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-21:
     image: thermostatcustom
@@ -210,7 +233,7 @@ services:
     ports:
       - "50021:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-22:
     image: thermostatcustom
@@ -218,7 +241,7 @@ services:
     ports:
       - "50022:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-23:
     image: thermostatcustom
@@ -226,7 +249,7 @@ services:
     ports:
       - "50023:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-24:
     image: thermostatcustom
@@ -234,7 +257,7 @@ services:
     ports:
       - "50024:8080"
     networks:
-      - db_network
+      - thermostat_network
 
   thermostat-25:
     image: thermostatcustom
@@ -242,8 +265,8 @@ services:
     ports:
       - "50025:8080"
     networks:
-      - db_network
+      - thermostat_network
 
 
 networks:
-  db_network:
+  thermostat_network:
