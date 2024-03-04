@@ -8,9 +8,9 @@ Team 04: Thema 1 - C# / SQL / Angular
 3. http://127.0.0.1:8080/ in Browser öffnen (Frontend und Backend brauchen ein paar Sekunden (CORS policy) bis sie sauber miteinander kommunizieren -> initial Room brauch ein paar Sekunden bis er angezeigt wird)
 
 ## Mitglieder und Aufteilung
-- Github Name | Name            | Aufgabenbereiche                                    | Matrikelnummer
-- ------------+-----------------+-----------------------------------------------------+---------------
-- viggoy      | Victoria Michel | Frontend                                            | 7086207
-- MassivNikki | Niklas Bahr     | Frontend & Backend (Thermostat API)                 | 5883125
-- 19CLRBLND99 | Jan Throm       | Backend & Database (Zentrale)                       | 1323281
-- PeterRatt   | Peter Rattel    | Docker & Support @Backend/Database (Zentrale)       | 5835319
+- Github Name | Name            | Aufgabenbereiche                                   
+- ------------+-----------------+----------------------------------------------
+- viggoy      | Victoria Michel | Frontend                                            
+- MassivNikki | Niklas Bahr     | Frontend & Backend (Thermostat API)                 
+- 19CLRBLND99 | Jan Throm       | Backend & Database (Zentrale)                       
+- PeterRatt   | Peter Rattel    | Docker & Support @Backend/Database (Zentrale)       
