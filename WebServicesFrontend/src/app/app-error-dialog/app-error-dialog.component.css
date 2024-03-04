@@ -4,8 +4,10 @@
 
 .error-message {
     margin: 5px;
+    color: #FFF;
 }
 
 .error-title {
     margin: 5px;
+    color: #FF0000;
 }
